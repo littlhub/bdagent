@@ -2133,13 +2133,65 @@ def refresh_skill_index():
     return added
 
 
-def register_protein(skill_chain, name, gene_chain="", keywords=None):
-    """把一条新技能链登记成蛋白，供后续复用。
+def _next_free_codon(db):
+    """取一个未被占用的 3 碱基密码子。
 
-    返回 (ok, 消息)。gene_chain 缺省时按链长生成占位码。
+    按字母序找第一个空闲组合（AAA…TTT 之外还有 X 前缀兜底），
+    避免和已登记的蛋白撞名。
+    """
+    used = set()
+    for p in db.get("proteins", []):
+        gc = (p.get("gene_chain") or "").upper()
+        if gc:
+            used.add(gc)
+    for cm in (db.get("codon_mapping") or {}):
+        used.add(cm.upper())
+    bases = "ATCG"
+    for a in bases:
+        for b in bases:
+            for c in bases:
+                cand = a + b + c
+                if cand not in used:
+                    return cand
+    # 3 碱基用尽才退到 X 前缀（256 条理论上够用）
+    n = 1
+    while f"X{n}" in used:
+        n += 1
+    return f"X{n}"
+
+
+def register_protein(skill_chain, name, gene_chain="", keywords=None,
+                     rules=None, verify_only=False):
+    """把一条**已验证执行成功**的技能链登记成蛋白，供后续复用。
+
+    只有 ok=True 的链才应该调用这里——失败的链固化进库会让后续
+    同样的需求命中错误流程。
+
+    参数：
+      skill_chain  技能名列表，如 ['search', 'web-summarizer']
+      name         蛋白中文名，如「联网摘要链」
+      gene_chain   指定密码子；留空则自动分配
+      keywords     关键词列表，用于二级匹配
+      rules        正则规则列表，用于一级匹配（可选）
+      verify_only  只做校验不写入（用于预览）
+
+    返回 (ok, 消息)。
     """
     if not skill_chain:
         return False, "技能链为空"
+
+    # 校验技能真实存在，避免把错名字的链写进库
+    _data_dir, skills_dir = _workspace_dirs()
+    try:
+        lib = _make_library(_data_dir, skills_dir)
+        known = set(lib.skill_names()) | set(TOOL_HINTS)
+    except Exception:
+        known = None
+    if known is not None:
+        missing = [s for s in skill_chain if s not in known]
+        if missing:
+            return False, "技能不存在：" + ", ".join(missing)
+
     data_dir, _ = _workspace_dirs()
     idx_path = os.path.join(data_dir, "proteins", "index.json")
     try:
@@ -2147,36 +2199,194 @@ def register_protein(skill_chain, name, gene_chain="", keywords=None):
             with open(idx_path, encoding="utf-8") as f:
                 db = json.load(f)
         else:
-            db = {"version": "1.0", "description": "蛋白层", "proteins": []}
+            db = {"version": "1.0", "description": "蛋白层",
+                  "proteins": [], "codon_mapping": {}, "available": []}
     except (OSError, ValueError):
         return False, "蛋白库读取失败"
 
     prots = db.setdefault("proteins", [])
-    chain = gene_chain or f"X{len(prots) + 1}"
+
+    # 同一条链已存在就不重复登记
+    norm = list(skill_chain)
     for p in prots:
-        if p.get("gene_chain") == chain:
+        if list(p.get("skill_chain") or []) == norm:
+            return False, f"该技能链已登记为 {p.get('gene_chain')}（{p.get('name_cn')}）"
+
+    chain = gene_chain or _next_free_codon(db)
+    for p in prots:
+        if (p.get("gene_chain") or "").upper() == chain.upper():
             return False, f"基因链 {chain} 已存在"
 
+    if verify_only:
+        return True, f"可登记：{chain} {name} → {' → '.join(norm)}"
+
     prots.append({
-        "index": len(prots) + 1,
+        "index": max((int(p.get("index") or 0) for p in prots), default=0) + 1,
         "name_cn": name,
         "name_en": name,
         "nickname": name,
-        "abbreviation": name.upper()[:6],
+        "abbreviation": (name or chain)[:6].upper(),
         "gene_chain": chain,
-        "skill_chain": list(skill_chain),
+        "skill_chain": norm,
+        "core": name,
         "keywords": list(keywords or []) + [name],
-        "description": "手动登记：" + " → ".join(skill_chain),
+        # 一级匹配规则；没有规则时靠 keywords 走二级匹配
+        "rules": list(rules or []),
+        "priority": 50,
+        "description": "自动登记：" + " → ".join(norm),
+        # 数据流按「顺序传递、末步吃上一步文字」的通用默认；
+        # 需要文件流转的链由用户改 consumes
+        "polypeptide_tree": {
+            "start_codon": "AUG",
+            "chain": "-".join(
+                (("SV" + str(i + 1)) if i else "ST") for i in range(len(norm))),
+            "nodes": [
+                {"id": str(i + 1), "skill": s,
+                 "consumes": (["prev_text"] if i else []),
+                 "defaults": {}}
+                for i, s in enumerate(norm)
+            ],
+            "stop_codon": "UAA",
+        },
+        "hash": f"auto_{chain.lower()}_v1",
+        "file": f"{chain}.{name}.json",
         "auto_registered": True,
     })
+
+    db.setdefault("codon_mapping", {})[chain] = {
+        "protein_index": prots[-1]["index"],
+        "polypeptides": [],
+        "name": name,
+    }
     db["total"] = len(prots)
+    db["available"] = [c for c in (db.get("available") or [])
+                       if c.upper() != chain.upper()]
+
     try:
         os.makedirs(os.path.dirname(idx_path), exist_ok=True)
         with open(idx_path, "w", encoding="utf-8") as f:
             json.dump(db, f, ensure_ascii=False, indent=2)
     except OSError as e:
         return False, f"写入失败: {e}"
-    return True, f"已登记蛋白 {chain}：{name} → {' → '.join(skill_chain)}"
+    return True, f"已登记蛋白 {chain}：{name} → {' → '.join(norm)}"
+
+
+def _print_protein_list():
+    """列出蛋白库。"""
+    data_dir, _ = _workspace_dirs()
+    idx = os.path.join(data_dir, "proteins", "index.json")
+    try:
+        with open(idx, encoding="utf-8") as f:
+            db = json.load(f)
+    except (OSError, ValueError) as e:
+        print(f"❌ 蛋白库读取失败: {e}")
+        return
+    prots = db.get("proteins") or []
+    print(f"🧬 蛋白库共 {len(prots)} 条")
+    print()
+    for p in sorted(prots, key=lambda x: x.get("gene_chain") or ""):
+        chain = " → ".join(p.get("skill_chain") or []) or "(无链)"
+        auto = " [自动]" if p.get("auto_registered") else ""
+        print(f"  {p.get('gene_chain', '?'):6s} {p.get('name_cn', '')[:16]:18s}{auto}")
+        print(f"         {chain}")
+
+
+def _protein_new_cli(args):
+    """解析 `/protein new 名称 --skills a,b,c [--keywords x,y] [--rules 正则1,正则2]`。"""
+    import shlex
+    try:
+        parts = shlex.split(args, posix=False)
+    except ValueError:
+        parts = args.split()
+
+    name, skills, keywords, rules = "", [], [], []
+    i = 0
+    while i < len(parts):
+        tok = parts[i]
+        if tok in ("--skills", "-s") and i + 1 < len(parts):
+            skills = [x.strip() for x in parts[i + 1].replace("，", ",").split(",") if x.strip()]
+            i += 2
+        elif tok in ("--keywords", "-k") and i + 1 < len(parts):
+            keywords = [x.strip() for x in parts[i + 1].replace("，", ",").split(",") if x.strip()]
+            i += 2
+        elif tok in ("--rules", "-r") and i + 1 < len(parts):
+            rules = [x.strip() for x in parts[i + 1].replace("，", ",").split(",") if x.strip()]
+            i += 2
+        elif not name:
+            name = tok
+            i += 1
+        else:
+            i += 1
+
+    if not name or not skills:
+        print("用法：/protein new 名称 --skills 技能1,技能2 [--keywords 说法1,说法2] [--rules 正则1]")
+        return
+
+    ok, msg = register_protein(skills, name, keywords=keywords, rules=rules)
+    if ok:
+        print(f"✅ {msg}")
+        print("   已生效，无需重启")
+    else:
+        print(f"❌ {msg}")
+
+
+def _protein_del_cli(chain):
+    """按基因码删除蛋白。"""
+    chain = chain.strip().upper()
+    if not chain:
+        print("用法：/protein del 基因码（如 GAA）")
+        return
+    data_dir, _ = _workspace_dirs()
+    idx = os.path.join(data_dir, "proteins", "index.json")
+    try:
+        with open(idx, encoding="utf-8") as f:
+            db = json.load(f)
+    except (OSError, ValueError) as e:
+        print(f"❌ 蛋白库读取失败: {e}")
+        return
+    prots = db.get("proteins") or []
+    target = [p for p in prots if (p.get("gene_chain") or "").upper() == chain]
+    if not target:
+        print(f"❌ 找不到蛋白 {chain}")
+        return
+    db["proteins"] = [p for p in prots if (p.get("gene_chain") or "").upper() != chain]
+    (db.get("codon_mapping") or {}).pop(chain, None)
+    db["total"] = len(db["proteins"])
+    if chain not in (db.get("available") or []):
+        db.setdefault("available", []).append(chain)
+        db["available"] = sorted(set(db["available"]))
+    try:
+        with open(idx, "w", encoding="utf-8") as f:
+            json.dump(db, f, ensure_ascii=False, indent=2)
+    except OSError as e:
+        print(f"❌ 写入失败: {e}")
+        return
+    print(f"✅ 已删除 {chain}（{target[0].get('name_cn')}），剩余 {db['total']} 条")
+
+
+def _maybe_remember_chain(planned, ok, requirement):
+    """执行成功的 LLM 规划链，存进蛋白库供下次复用。
+
+    只在「规划来自 LLM」且「执行全部成功」时登记——
+    失败或本地已有的链不写入，避免污染蛋白库。
+    """
+    try:
+        if not ok:
+            return
+        if not planned or planned.get("level") != "llm":
+            return
+        chain = list(planned.get("skill_chain") or [])
+        # 单技能没必要建蛋白（原子层已经能命中），至少两步才值得固化
+        if len(chain) < 2:
+            return
+        # 链里若有工具名（search/fetch），说明是临时组合，也跳过
+        keywords = [(requirement or "").strip()][:1]
+        name = (requirement or "自动链").strip()[:16]
+        good, msg = register_protein(chain, name, keywords=keywords)
+        if good:
+            print(f"💾 {msg}")
+    except Exception:
+        pass
 
 
 # 明确的联网需求特征：命中就直接进 task，不必再问 LLM。
@@ -2630,10 +2840,17 @@ def run_task(req, key, base, model):
             return True
 
         print(f"🔄 工作流: {expr}")
+        _src = "stopj" if req.lower().startswith("stopj") else "llm"
         ok, detail = _run_planned(expr, planned_args, library, data_dir,
                                   requirement=req,
-                                  source="stopj" if req.lower().startswith("stopj") else "llm",
+                                  source=_src,
                                   key=key, base=base, model=model)
+        # LLM 现场规划出来的多步链，跑成功就固化进蛋白库，
+        # 下次同样的需求直接本地命中，不再花 LLM 的 token。
+        if _src == "llm" and ok:
+            _chain = [s["skill"] for s in steps if s.get("type") == "SKILL"]
+            _maybe_remember_chain({"level": "llm", "skill_chain": _chain},
+                                  ok, req)
         # 把结果暂存，主循环可据此记住上下文（如「结果呢」追问）
         run_task.last_result = detail
         return True
@@ -4225,6 +4442,7 @@ CHAT_HELP = """📖 可用命令（对话中直接输入）：
     /mode       查看或切换代码路由模式（/mode auto|code|plan|goal）
     /config     打开 API Key 配置窗口
     /imagekey   单独配置生图专用 Key（AGNES_API_KEY，与对话主 Key 分开）
+    /protein    管理蛋白库：list 列出 / new 登记 / del 删除
     /help       显示本帮助
     /quit       退出对话
 其它：直接输入需求（如"给所有函数加注释"），AI 将分析并修改代码；
@@ -4607,6 +4825,19 @@ def run_chat(key, base, model, yes=False):
                     print(f"🧭 代码路由模式：{names[forced_mode]}")
                 else:
                     print(f"❓ 无法识别 {arg!r}，用法：/mode auto|code|plan|goal")
+            elif cmd == "protein" or cmd.startswith("protein "):
+                arg = cmd.split(None, 1)[1].strip() if " " in cmd else ""
+                if not arg or arg in ("list", "列表"):
+                    _print_protein_list()
+                elif arg.startswith("new ") or arg.startswith("新建 "):
+                    _protein_new_cli(arg.split(None, 1)[1].strip())
+                elif arg.startswith("del ") or arg.startswith("删除 "):
+                    _protein_del_cli(arg.split(None, 1)[1].strip())
+                else:
+                    print("用法：")
+                    print("  /protein list                     列出所有蛋白")
+                    print("  /protein new 名称 --skills a,b,c   登记新链")
+                    print("  /protein del 基因码                删除")
             else:
                 print(f"❓ 未知命令 /{cmd}，输入 /help 查看可用命令。")
             continue
