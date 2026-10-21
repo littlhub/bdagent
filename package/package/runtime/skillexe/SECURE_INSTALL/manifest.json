@@ -1,0 +1,28 @@
+{
+  "name": "SECURE_INSTALL",
+  "version": "2.0",
+  "type": "skill-manager",
+  "description": "技能安装与备份多肽 - 使用cow install安装，STOPJRuntime备份",
+  "created": "2026-08-23",
+  "renamed_from": "C3",
+  "renamed_at": "2026-08-24",
+  "dependencies": {
+    "STOPJRuntime": {
+      "required": true,
+      "purpose": "多肽备份引擎"
+    }
+  },
+  "commands": {
+    "install": "cow install <skill>",
+    "backup": "STOPJRuntime backup_peptides <skill>",
+    "restore": "STOPJRuntime restore_skill <archive>"
+  },
+  "files": {
+    "skill_md": "SKILL.md",
+    "manifest": "manifest.json",
+    "atoms": "atoms/",
+    "polypeptides": "polypeptides/",
+    "proteins": "proteins/",
+    "scripts": "scripts/"
+  }
+}

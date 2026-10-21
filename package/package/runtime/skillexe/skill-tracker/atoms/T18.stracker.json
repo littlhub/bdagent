@@ -1,0 +1,22 @@
+{
+  "index": 18,
+  "skill": "skill-tracker",
+  "name_cn": "技能追踪",
+  "name_en": "Skill Tracker",
+  "nickname": "stracker",
+  "abbreviation": "SKT",
+  "gene_code": "T",
+  "gene_name": "Thymine",
+  "type": "工具类",
+  "codon_level": 1,
+  "parent_codon": null,
+  "children_codons": [
+    "TA",
+    "TT",
+    "TC",
+    "TG"
+  ],
+  "hash": "atom_T18_stracker",
+  "description": "记录技能调用历史",
+  "file": "T18.stracker.json"
+}

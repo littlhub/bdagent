@@ -1,0 +1,8 @@
+{
+  "name": "R",
+  "index": 103,
+  "description": "恢复备份 - 从备份恢复技能",
+  "type": "atom",
+  "category": "backup",
+  "token_cost": 150
+}

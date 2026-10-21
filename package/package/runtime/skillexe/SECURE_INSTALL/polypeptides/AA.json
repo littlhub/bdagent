@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "安全安装A",
+  "name_en": "Secure InstallA",
+  "nickname": "sinst",
+  "abbreviation": "SEIA",
+  "gene_chain": "AA",
+  "atoms": [
+    12
+  ],
+  "description": "安全安装 + A",
+  "codon_level": 2,
+  "file": "AA.json"
+}

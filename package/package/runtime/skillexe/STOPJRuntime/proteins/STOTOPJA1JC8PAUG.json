@@ -1,0 +1,128 @@
+{
+  "codon": "STOTOPJA1JC8PAUG",
+  "name": "\u5c0f\u8bf4\u521b\u4f5c\u89c6\u9891\u94fe",
+  "name_cn": "STOPJ\u95f8\u95e8\u5c0f\u8bf4\u521b\u4f5c\u5de5\u4f5c\u6d41",
+  "description": "\u95f8\u95e8\u63a7\u5236\u7684\u5b8c\u6574\u5c0f\u8bf4\u521b\u4f5c\u4e0e\u89c6\u9891\u751f\u6210\u5de5\u4f5c\u6d41",
+  "atoms": [
+    101,
+    102,
+    103,
+    104,
+    105,
+    1,
+    101,
+    102,
+    102
+  ],
+  "token": 4730,
+  "structure": {
+    "gate": {
+      "S": {
+        "action": "\u95f8\u95e8\u542f\u52a8",
+        "index": 101
+      },
+      "T": {
+        "action": "\u505c\u6b62\u68c0\u67e5",
+        "index": 102
+      },
+      "O": {
+        "action": "\u5faa\u73af",
+        "index": 103
+      }
+    },
+    "plan": {
+      "P": {
+        "action": "\u5de5\u4f5c\u6d41\u89c4\u5212",
+        "index": 104
+      }
+    },
+    "jump": {
+      "J": {
+        "action": "\u4f4d\u70b9\u8df3\u8f6c",
+        "index": 105
+      }
+    },
+    "novel": {
+      "C8": {
+        "action": "\u4eba\u7269\u591a\u89c6\u56fe\u5de5\u4f5c\u6d41",
+        "index": 29
+      },
+      "P": {
+        "action": "\u89c4\u5212\u5199\u5c0f\u8bf4",
+        "index": 104
+      }
+    },
+    "video": {
+      "AUG": {
+        "action": "MIG\u8bb0\u5fc6\u751f\u56fe",
+        "index": 1
+      },
+      "T": {
+        "action": "\u505c\u6b62",
+        "index": 102
+      }
+    }
+  },
+  "workflow": [
+    {
+      "step": 1,
+      "code": "S",
+      "action": "\u542f\u52a8\u95f8\u95e8"
+    },
+    {
+      "step": 2,
+      "code": "T",
+      "action": "\u505c\u6b62\u68c0\u67e5"
+    },
+    {
+      "step": 3,
+      "code": "O",
+      "action": "\u5faa\u73af\u6267\u884c"
+    },
+    {
+      "step": 4,
+      "code": "P",
+      "action": "\u89c4\u5212\u5de5\u4f5c\u6d41"
+    },
+    {
+      "step": 5,
+      "code": "J",
+      "action": "\u8df3\u8f6c\u5230C8"
+    },
+    {
+      "step": 6,
+      "code": "C8",
+      "action": "\u4eba\u7269\u591a\u89c6\u56fe\u5de5\u4f5c\u6d41"
+    },
+    {
+      "step": 7,
+      "code": "P",
+      "action": "\u89c4\u5212\u5199\u5c0f\u8bf4"
+    },
+    {
+      "step": 8,
+      "code": "AUG",
+      "action": "MIG\u8bb0\u5fc6\u751f\u56fe"
+    },
+    {
+      "step": 9,
+      "code": "T",
+      "action": "\u505c\u6b62"
+    },
+    {
+      "step": 10,
+      "code": "T",
+      "action": "\u505c\u6b62"
+    }
+  ],
+  "usage": {
+    "command": "/STOTOPJA1JC8PAUG",
+    "shortcuts": [
+      "/novel",
+      "/story-video"
+    ],
+    "context": "\u5c0f\u8bf4\u521b\u4f5c\u4e0e\u89c6\u9891\u751f\u6210"
+  },
+  "version": "1.0",
+  "created": "2026-08-23"
+}

@@ -1,0 +1,22 @@
+{
+  "index": 13,
+  "skill": "STOPJRuntime",
+  "name_cn": "闸门运行时",
+  "name_en": "STOPJ Runtime",
+  "nickname": "stopj",
+  "abbreviation": "STR",
+  "gene_code": "A",
+  "gene_name": "Adenine",
+  "type": "系统类",
+  "codon_level": 1,
+  "parent_codon": null,
+  "children_codons": [
+    "AA",
+    "AT",
+    "AC",
+    "AG"
+  ],
+  "hash": "atom_A13_stopj",
+  "description": "闸门技能完整多肽库",
+  "file": "A13.stopj.json"
+}

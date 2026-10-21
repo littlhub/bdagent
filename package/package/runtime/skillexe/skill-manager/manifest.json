@@ -1,0 +1,50 @@
+{
+  "name": "skill-manager",
+  "version": "1.1",
+  "description": "技能管理多肽 - 完整技能生命周期管理",
+  "author": "Agnes AI",
+  "created": "2026-08-24",
+  "updated": "2026-08-24",
+  "keywords": ["skill", "manager", "backup", "install", "encrypt", "herb"],
+  "commands": [
+    "/SM",
+    "/SM backup",
+    "/SM install",
+    "/SM create",
+    "/SM delete",
+    "/SM encrypt",
+    "/SM decrypt",
+    "/SM list",
+    "/SM status",
+    "/SM herb-encrypt",
+    "/SM herb-decrypt",
+    "/SM herb-status"
+  ],
+  "dependencies": [
+    {
+      "name": "STOPJRuntime",
+      "version": "2.5",
+      "required": true,
+      "purpose": "多肽备份引擎"
+    },
+    {
+      "name": "SECURE_INSTALL",
+      "version": "1.0",
+      "required": true,
+      "purpose": "技能安装管理"
+    },
+    {
+      "name": "CRYPTO",
+      "version": "2.0",
+      "required": false,
+      "purpose": "加密解密配置"
+    }
+  ],
+  "metadata": {
+    "cowagent": {
+      "always": true,
+      "category": "system",
+      "priority": "high"
+    }
+  }
+}

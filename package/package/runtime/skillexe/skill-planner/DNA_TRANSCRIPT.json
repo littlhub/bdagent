@@ -1,0 +1,184 @@
+{
+  "system": "DNA-RNA-Protein Skill Transcription System",
+  "version": "1.0",
+  "created": "2026-08-23",
+  
+  "genes": {
+    "built_in": {
+      "count": 11,
+      "codons": {
+        "AUG": {
+          "skill": "memory-image-generation",
+          "name_cn": "MIG记忆生图",
+          "name_en": "Memory Image Generation",
+          "category": "生图类",
+          "token_cost": 1500,
+          "usage_count": 47,
+          "description": "从HERB知识库智能读取提示词生图"
+        },
+        "AAU": {
+          "skill": "agnes-image",
+          "name_cn": "Agnes文生图",
+          "name_en": "Agnes Image Generation",
+          "category": "生图类",
+          "token_cost": 1500,
+          "usage_count": 23,
+          "description": "使用Agnes模型生成图像"
+        },
+        "AUU": {
+          "skill": "visioncustom",
+          "name_cn": "视觉识别",
+          "name_en": "Vision Custom",
+          "category": "识别类",
+          "token_cost": 1300,
+          "usage_count": 15,
+          "description": "使用Agnes AI视觉模型识别图片"
+        },
+        "GGU": {
+          "skill": "send",
+          "name_cn": "文件发送",
+          "name_en": "Send File",
+          "category": "工具类",
+          "token_cost": 100,
+          "usage_count": 100,
+          "description": "发送文件给用户"
+        },
+        "CCU": {
+          "skill": "docx",
+          "name_cn": "Word处理",
+          "name_en": "Word Document",
+          "category": "Office类",
+          "token_cost": 800,
+          "usage_count": 30,
+          "description": "Word文档处理"
+        },
+        "CCC": {
+          "skill": "xlsx",
+          "name_cn": "Excel处理",
+          "name_en": "Excel Spreadsheet",
+          "category": "Office类",
+          "token_cost": 800,
+          "usage_count": 25,
+          "description": "Excel表格处理"
+        },
+        "CCA": {
+          "skill": "pptx",
+          "name_cn": "PPT处理",
+          "name_en": "PowerPoint",
+          "category": "Office类",
+          "token_cost": 900,
+          "usage_count": 20,
+          "description": "PPT演示文稿处理"
+        },
+        "CCG": {
+          "skill": "pdf",
+          "name_cn": "PDF处理",
+          "name_en": "PDF Document",
+          "category": "Office类",
+          "token_cost": 1000,
+          "usage_count": 35,
+          "description": "PDF文件处理"
+        },
+        "ACU": {
+          "skill": "memory-sync",
+          "name_cn": "记忆同步",
+          "name_en": "Memory Sync",
+          "category": "记忆类",
+          "token_cost": 500,
+          "usage_count": 8,
+          "description": "同步记忆到HERB知识库"
+        },
+        "CGU": {
+          "skill": "code-reviewer",
+          "name_cn": "代码审查",
+          "name_en": "Code Reviewer",
+          "category": "开发类",
+          "token_cost": 600,
+          "usage_count": 12,
+          "description": "代码审查和审计"
+        },
+        "CUU": {
+          "skill": "markdown-converter",
+          "name_cn": "Markdown转换",
+          "name_en": "Markdown Converter",
+          "category": "转换类",
+          "token_cost": 700,
+          "usage_count": 18,
+          "description": "文档格式转换"
+        }
+      }
+    },
+    "user_templates": {
+      "count": 17,
+      "reserved_codons": [
+        {"codon": "AAC", "slot": "agnes-image-v2", "status": "reserved"},
+        {"codon": "AUC", "slot": "visioncustom-v2", "status": "reserved"},
+        {"codon": "AUA", "slot": "skill-capsule-lib", "status": "reserved"},
+        {"codon": "AU(G)", "slot": "待分配", "status": "available"},
+        {"codon": "GAU", "slot": "bdpan-storage", "status": "reserved"},
+        {"codon": "GAC", "slot": "send-enhanced", "status": "reserved"},
+        {"codon": "GAA", "slot": "web-summarizer", "status": "reserved"},
+        {"codon": "GAG", "slot": "youtube-watcher", "status": "reserved"},
+        {"codon": "GAT", "slot": "exec-oraybox-api", "status": "reserved"},
+        {"codon": "GC(U/A/C/G)", "slot": "待分配", "status": "available"},
+        {"codon": "CAU", "slot": "plugin-chart", "status": "reserved"},
+        {"codon": "CAC", "slot": "skill-planner", "status": "reserved"},
+        {"codon": "CAG", "slot": "skill-runner", "status": "reserved"},
+        {"codon": "CAT", "slot": "skill-tracker", "status": "reserved"},
+        {"codon": "CGC", "slot": "待分配", "status": "available"},
+        {"codon": "CGA", "slot": "待分配", "status": "available"},
+        {"codon": "CUG", "slot": "exec-oraybox-api", "status": "reserved"}
+      ]
+    }
+  },
+  
+  "transcription_rules": {
+    "start_codon": "AUG",
+    "stop_codons": ["UAA", "UAG", "UGA"],
+    "reading_frame": "5'→3'",
+    "splice_sites": {
+      "donor": "GT",
+      "acceptor": "AG"
+    }
+  },
+  
+  "translation_rules": {
+    "codon_to_amino_acid": "standard_genetic_code",
+    "polypeptide_formation": "sequential",
+    "protein_folding": "functional_workflor"
+  },
+  
+  "user_interface": {
+    "natural_language": {
+      "enabled": true,
+      "example": "帮我生成一张黑丝美图"
+    },
+    "aliases": {
+      "enabled": true,
+      "examples": {"/mig": "AUG", "/gen": "AAU", "/vis": "AUU", "/send": "GGU"}
+    },
+    "abbreviations": {
+      "enabled": true,
+      "examples": {"MIG": "AUG", "AGN": "AAU", "VIS": "AUU"}
+    },
+    "codon_direct": {
+      "enabled": true,
+      "examples": {"/AUG": "直接调用AUG", "/AUGAAU": "双生图链"}
+    },
+    "protein_names": {
+      "enabled": true,
+      "examples": {"/A": "游泳游戏开发链", "/B": "文档处理工作流"}
+    }
+  },
+  
+  "skill_planner": {
+    "functions": [
+      "intent_recognition",
+      "database_query",
+      "workflow_planning",
+      "token_estimation",
+      "dynamic_management"
+    ],
+    "output_format": "ascii_art_workflow_diagram"
+  }
+}

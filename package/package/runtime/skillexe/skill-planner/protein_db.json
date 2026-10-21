@@ -1,0 +1,199 @@
+{
+  "version": "1.0",
+  "description": "蛋白层 - 多肽折叠层 (3碱基)",
+  "proteins": [
+    {
+      "index": 1,
+      "name_cn": "游泳游戏开发",
+      "name_en": "Swimming Game Development",
+      "nickname": "swim_game",
+      "abbreviation": "SGD",
+      "gene_chain": "AAA",
+      "polypeptide_tree": {
+        "start_codon": "AUG",
+        "chain": "AA-AA-A",
+        "nodes": [
+          {"id": "1", "polypeptide": "AA", "atoms": [1, 5], "function": "MIG记忆同步"},
+          {"id": "2", "polypeptide": "AA", "atoms": [1, 5], "function": "MIG记忆同步"},
+          {"id": "3", "polypeptide": "A", "atoms": [1], "function": "MIG生图"}
+        ],
+        "stop_codon": "UAA"
+      },
+      "fold_structure": {
+        "folding_type": "alpha-helix",
+        "description": "三级螺旋结构，记忆同步→记忆同步→生图"
+      },
+      "hash": "sg_a1b2c3d4",
+      "description": "游泳游戏开发工作流",
+      "file": "AAA.游泳游戏开发.json"
+    },
+    {
+      "index": 2,
+      "name_cn": "丝袜写真链",
+      "name_en": "Silk Stocking Photo Chain",
+      "nickname": "chain_8b",
+      "abbreviation": "SSC",
+      "gene_chain": "AAC",
+      "polypeptide_tree": {
+        "start_codon": "AUG",
+        "chain": "AA-AC-AG",
+        "nodes": [
+          {"id": "1", "polypeptide": "AA", "atoms": [1, 5], "function": "MIG记忆同步"},
+          {"id": "2", "polypeptide": "AC", "atoms": [1, 3], "function": "MIG+Agnes混合"},
+          {"id": "3", "polypeptide": "AG", "atoms": [1, 4], "function": "MIG发送"}
+        ],
+        "edges": [
+          {"from": "1", "to": "2", "bond": "hydrogen"},
+          {"from": "2", "to": "3", "bond": "peptide"}
+        ],
+        "stop_codon": "UAA"
+      },
+      "fold_structure": {
+        "folding_type": "beta-sheet",
+        "description": "β折叠结构，记忆同步→混合生图→发送"
+      },
+      "hash": "ss_c3d4e5f6",
+      "description": "丝袜写真生成完整链路",
+      "file": "AAC.丝袜写真生成.json"
+    },
+    {
+      "index": 3,
+      "name_cn": "文档识别处理",
+      "name_en": "Document Recognition Process",
+      "nickname": "doc_proc",
+      "abbreviation": "DRP",
+      "gene_chain": "AAT",
+      "polypeptide_tree": {
+        "start_codon": "AUG",
+        "chain": "AA-AT-AT",
+        "nodes": [
+          {"id": "1", "polypeptide": "AA", "atoms": [1, 5], "function": "MIG记忆同步"},
+          {"id": "2", "polypeptide": "AT", "atoms": [1, 2], "function": "MIG视觉识别"},
+          {"id": "3", "polypeptide": "AT", "atoms": [1, 2], "function": "MIG视觉识别"}
+        ],
+        "stop_codon": "UAA"
+      },
+      "fold_structure": {
+        "folding_type": "random-coil",
+        "description": "无规则卷曲，记忆同步→识别→识别"
+      },
+      "hash": "dp_e5f6g7h8",
+      "description": "文档识别处理工作流",
+      "file": "AAT.文档识别处理.json"
+    },
+    {
+      "index": 4,
+      "name_cn": "MIG全链路",
+      "name_en": "MIG Full Chain",
+      "nickname": "mig_full",
+      "abbreviation": "MFC",
+      "gene_chain": "ACA",
+      "polypeptide_tree": {
+        "start_codon": "AUG",
+        "chain": "AC-CA-AA",
+        "nodes": [
+          {"id": "1", "polypeptide": "AC", "atoms": [1, 3], "function": "MIG+Agnes混合"},
+          {"id": "2", "polypeptide": "CA", "atoms": [3, 1], "function": "Agnes+MIG混合"},
+          {"id": "3", "polypeptide": "AA", "atoms": [1, 5], "function": "MIG记忆同步"}
+        ],
+        "stop_codon": "UAA"
+      },
+      "fold_structure": {
+        "folding_type": "beta-turn",
+        "description": "转角结构，混合生图→混合生图→记忆同步"
+      },
+      "hash": "mf_g7h8i9j0",
+      "description": "MIG+Agnes混合全链路",
+      "file": "ACA.MIG全链路.json"
+    },
+    {
+      "index": 5,
+      "name_cn": "游泳游戏开发",
+      "name_en": "Swimming Game Development",
+      "nickname": "swim",
+      "abbreviation": "SG",
+      "gene_chain": "ATA",
+      "polypeptide_tree": {
+        "start_codon": "AUG",
+        "chain": "AT-TA-A",
+        "nodes": [
+          {"id": "1", "polypeptide": "AT", "atoms": [1, 2], "function": "MIG视觉识别"},
+          {"id": "2", "polypeptide": "TA", "atoms": [2, 1], "function": "视觉MIG链"},
+          {"id": "3", "polypeptide": "A", "atoms": [1], "function": "MIG生图"}
+        ],
+        "stop_codon": "UAA"
+      },
+      "fold_structure": {
+        "folding_type": "alpha-helix",
+        "description": "螺旋结构，识别→混合→生图"
+      },
+      "hash": "sg_b2c3d4e5",
+      "description": "游泳游戏开发 (ATA变体)",
+      "file": "ATA.json"
+    },
+    {
+      "index": 6,
+      "name_cn": "丝袜写真链",
+      "name_en": "Silk Stocking Photo Chain",
+      "nickname": "silk",
+      "abbreviation": "SS",
+      "gene_chain": "ATC",
+      "polypeptide_tree": {
+        "start_codon": "AUG",
+        "chain": "AT-TC-C",
+        "nodes": [
+          {"id": "1", "polypeptide": "AT", "atoms": [1, 2], "function": "MIG视觉识别"},
+          {"id": "2", "polypeptide": "TC", "atoms": [2, 3], "function": "视觉Agnes链"},
+          {"id": "3", "polypeptide": "C", "atoms": [3], "function": "Agnes生图"}
+        ],
+        "stop_codon": "UAA"
+      },
+      "fold_structure": {
+        "folding_type": "beta-sheet",
+        "description": "β折叠结构，识别→混合→生图"
+      },
+      "hash": "ss_d4e5f6g7",
+      "description": "丝袜写真链 (ATC变体)",
+      "file": "ATC.json"
+    },
+    {
+      "index": 7,
+      "name_cn": "美甲识别分析",
+      "name_en": "Nail Art Recognition",
+      "nickname": "chain_45",
+      "abbreviation": "NAR",
+      "gene_chain": "ATT",
+      "polypeptide_tree": {
+        "start_codon": "AUG",
+        "chain": "AT-TT-TT",
+        "nodes": [
+          {"id": "1", "polypeptide": "AT", "atoms": [1, 2], "function": "MIG视觉识别"},
+          {"id": "2", "polypeptide": "TT", "atoms": [2, 2], "function": "视觉双链"},
+          {"id": "3", "polypeptide": "TT", "atoms": [2, 2], "function": "视觉双链"}
+        ],
+        "stop_codon": "UAA"
+      },
+      "fold_structure": {
+        "folding_type": "random-coil",
+        "description": "无规则卷曲，识别→双重视觉→双重视觉"
+      },
+      "hash": "na_f6g7h8i9",
+      "description": "美甲识别分析链",
+      "file": "ATT.美甲识别分析.json"
+    }
+  ],
+  "total": 7,
+  "codon_mapping": {
+    "AAA": {"protein_index": 1, "polypeptides": ["AA", "AA", "A"], "name": "游泳游戏开发"},
+    "AAC": {"protein_index": 2, "polypeptides": ["AA", "AC", "AG"], "name": "丝袜写真链"},
+    "AAT": {"protein_index": 3, "polypeptides": ["AA", "AT", "AT"], "name": "文档识别处理"},
+    "ACA": {"protein_index": 4, "polypeptides": ["AC", "CA", "AA"], "name": "MIG全链路"},
+    "ATA": {"protein_index": 5, "polypeptides": ["AT", "TA", "A"], "name": "游泳游戏开发"},
+    "ATC": {"protein_index": 6, "polypeptides": ["AT", "TC", "C"], "name": "丝袜写真链"},
+    "ATT": {"protein_index": 7, "polypeptides": ["AT", "TT", "TT"], "name": "美甲识别分析"}
+  },
+  "available": [
+    "AAG", "AGA", "AGT", "AGC", "AGG", "ATA", "ATG", "CAA", "CAT", "CAC", "CAG", "CCA", "CCT", "CCC", "CCG", "CGA", "CGT", "CGC", "CGG",
+    "GAA", "GAT", "GAC", "GAG", "GCA", "GCT", "GCC", "GCG", "GGA", "GGT", "GGC", "GGG"
+  ]
+}

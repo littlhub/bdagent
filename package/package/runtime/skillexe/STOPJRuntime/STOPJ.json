@@ -1,0 +1,55 @@
+{
+  "codon": "STOPJ",
+  "name": "STOPJ闸门控制链",
+  "name_cn": "STOPJ运行时闸门工作流",
+  "atoms": [
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "token": 1030,
+  "components": {
+    "S": "直线运行 - 沿生产线向下运行",
+    "T": "闸门停止 - 停止检查或返工",
+    "O": "循环 - 执行循环逻辑",
+    "P": "规划 - 规划工作流",
+    "J": "跳转 - 位点开始或等待结合"
+  },
+  "gate_sequence": [
+    {
+      "step": 1,
+      "letter": "S",
+      "action": "start_production"
+    },
+    {
+      "step": 2,
+      "letter": "T",
+      "action": "stop_gate_check"
+    },
+    {
+      "step": 3,
+      "letter": "O",
+      "action": "loop_continue"
+    },
+    {
+      "step": 4,
+      "letter": "P",
+      "action": "plan_next"
+    },
+    {
+      "step": 5,
+      "letter": "J",
+      "action": "jump_to_site"
+    }
+  ],
+  "usage": {
+    "command": "/STOPJ",
+    "alias": ["/ST", "/STOP"],
+    "shortcut": "S",
+    "context": "Runtime闸门控制"
+  },
+  "created": "2026-08-23",
+  "version": "1.1"
+}

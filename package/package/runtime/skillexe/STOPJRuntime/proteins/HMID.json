@@ -1,0 +1,50 @@
+{
+  "codon": "HMID",
+  "name": "HERB记忆管理与整合链",
+  "name_cn": "HERB记忆管理与整合工作流",
+  "atoms": [
+    101,
+    102,
+    104,
+    105
+  ],
+  "polypeptides": [
+    "HM",
+    "ID"
+  ],
+  "token": 1400,
+  "components": {
+    "HM": "HERB记忆管理 - API Key配置与权限验证",
+    "ID": "技能文档整合 - 记忆合并与多肽生成"
+  },
+  "gate_sequence": [
+    {
+      "step": 1,
+      "letter": "H",
+      "action": "herb_memory_query"
+    },
+    {
+      "step": 2,
+      "letter": "M",
+      "action": "key_management"
+    },
+    {
+      "step": 3,
+      "letter": "I",
+      "action": "integrate_memory"
+    },
+    {
+      "step": 4,
+      "letter": "D",
+      "action": "document_generation"
+    }
+  ],
+  "usage": {
+    "command": "/HMID",
+    "shortcut": "H",
+    "context": "HERB知识库管理与记忆整合"
+  },
+  "created": "2026-08-24",
+  "version": "1.0",
+  "description": "整合HERB API Key管理与记忆整合功能的完整工作流蛋白链"
+}

@@ -1,0 +1,21 @@
+{
+  "codon": "ID",
+  "atoms": [
+    104,
+    105
+  ],
+  "token_cost": 600,
+  "name_cn": "技能文档整合",
+  "description": "整合多日记忆并生成新技能多肽链",
+  "created": "2026-08-24",
+  "version": "1.0",
+  "components": {
+    "I": "记忆整合 - 合并2026-08-23和2026-08-24的记忆",
+    "D": "文档生成 - 创建新的MEMORY.md和多肽文件"
+  },
+  "usage": {
+    "command": "/ID",
+    "context": "记忆整合与文档生成",
+    "dependencies": ["MEMORY.md", "skills/C2/"]
+  }
+}

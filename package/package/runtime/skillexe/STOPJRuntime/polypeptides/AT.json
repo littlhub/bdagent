@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "闸门运行时T",
+  "name_en": "STOPJ RuntimeT",
+  "nickname": "stopj",
+  "abbreviation": "STRT",
+  "gene_chain": "AT",
+  "atoms": [
+    13
+  ],
+  "description": "闸门运行时 + T",
+  "codon_level": 2,
+  "file": "AT.json"
+}

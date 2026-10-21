@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "安全安装C",
+  "name_en": "Secure InstallC",
+  "nickname": "sinst",
+  "abbreviation": "SEIC",
+  "gene_chain": "AC",
+  "atoms": [
+    12
+  ],
+  "description": "安全安装 + C",
+  "codon_level": 2,
+  "file": "AC.json"
+}

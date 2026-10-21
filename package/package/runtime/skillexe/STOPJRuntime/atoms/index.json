@@ -1,0 +1,296 @@
+{
+  "version": "2.1",
+  "total": 35,
+  "by_base": {
+    "A": 8,
+    "C": 11,
+    "G": 6,
+    "T": 6,
+    "S": 1,
+    "O": 1,
+    "P": 1,
+    "J": 1
+  },
+  "skills": [
+    {
+      "codon": "AUG",
+      "skill": "memory-image-generation",
+      "name_cn": "MIG\u8bb0\u5fc6\u751f\u56fe",
+      "category": "\u751f\u56fe\u7c7b",
+      "token": 1500,
+      "index": 1
+    },
+    {
+      "codon": "AAU",
+      "skill": "agnes-image",
+      "name_cn": "Agnes\u6587\u751f\u56fe",
+      "category": "\u751f\u56fe\u7c7b",
+      "token": 1500,
+      "index": 2
+    },
+    {
+      "codon": "AAC",
+      "skill": "c8-character-workflow",
+      "name_cn": "\u4eba\u7269\u591a\u89c6\u56fe\u5de5\u4f5c\u6d41",
+      "category": "\u751f\u56fe\u7c7b",
+      "token": 3000,
+      "index": 3
+    },
+    {
+      "codon": "AUC",
+      "skill": "visioncustom",
+      "name_cn": "\u89c6\u89c9\u8bc6\u522b",
+      "category": "\u8bc6\u522b\u7c7b",
+      "token": 1300,
+      "index": 4
+    },
+    {
+      "codon": "AUA",
+      "skill": "memory-sync",
+      "name_cn": "\u8bb0\u5fc6\u540c\u6b65",
+      "category": "\u8bb0\u5fc6\u7c7b",
+      "token": 500,
+      "index": 5
+    },
+    {
+      "codon": "AUU",
+      "skill": "youtube-watcher",
+      "name_cn": "YouTube\u5206\u6790",
+      "category": "\u8bc6\u522b\u7c7b",
+      "token": 1200,
+      "index": 6
+    },
+    {
+      "codon": "AUR",
+      "skill": "image-enhance",
+      "name_cn": "\u56fe\u50cf\u589e\u5f3a",
+      "category": "\u7f16\u8f91\u7c7b",
+      "token": 700,
+      "index": 7
+    },
+    {
+      "codon": "CCU",
+      "skill": "docx",
+      "name_cn": "Word\u5904\u7406",
+      "category": "Office\u7c7b",
+      "token": 800,
+      "index": 8
+    },
+    {
+      "codon": "CCC",
+      "skill": "xlsx",
+      "name_cn": "Excel\u5904\u7406",
+      "category": "Office\u7c7b",
+      "token": 800,
+      "index": 9
+    },
+    {
+      "codon": "CCA",
+      "skill": "pptx",
+      "name_cn": "PPT\u5904\u7406",
+      "category": "Office\u7c7b",
+      "token": 900,
+      "index": 10
+    },
+    {
+      "codon": "CCG",
+      "skill": "pdf",
+      "name_cn": "PDF\u5904\u7406",
+      "category": "Office\u7c7b",
+      "token": 1000,
+      "index": 11
+    },
+    {
+      "codon": "CAU",
+      "skill": "code-reviewer",
+      "name_cn": "\u4ee3\u7801\u5ba1\u67e5",
+      "category": "\u5f00\u53d1\u7c7b",
+      "token": 600,
+      "index": 12
+    },
+    {
+      "codon": "CUC",
+      "skill": "markdown-converter",
+      "name_cn": "Markdown\u8f6c\u6362",
+      "category": "\u8f6c\u6362\u7c7b",
+      "token": 700,
+      "index": 13
+    },
+    {
+      "codon": "CUA",
+      "skill": "web-summarizer",
+      "name_cn": "\u7f51\u9875\u6458\u8981",
+      "category": "\u4fe1\u606f\u7c7b",
+      "token": 800,
+      "index": 14
+    },
+    {
+      "codon": "CUG",
+      "skill": "skill-planner",
+      "name_cn": "\u6280\u80fd\u89c4\u5212",
+      "category": "\u89c4\u5212\u7c7b",
+      "token": 400,
+      "index": 15
+    },
+    {
+      "codon": "CAA",
+      "skill": "skill-runner",
+      "name_cn": "\u6280\u80fd\u6267\u884c",
+      "category": "\u6267\u884c\u7c7b",
+      "token": 350,
+      "index": 16
+    },
+    {
+      "codon": "CAC",
+      "skill": "skill-tracker",
+      "name_cn": "\u6280\u80fd\u8ffd\u8e2a",
+      "category": "\u8ffd\u8e2a\u7c7b",
+      "token": 300,
+      "index": 17
+    },
+    {
+      "codon": "GGU",
+      "skill": "send",
+      "name_cn": "\u6587\u4ef6\u53d1\u9001",
+      "category": "\u5de5\u5177\u7c7b",
+      "token": 100,
+      "index": 18
+    },
+    {
+      "codon": "GGA",
+      "skill": "exec-oraybox-api",
+      "name_cn": "Oraybox\u901a\u4fe1",
+      "category": "\u5de5\u5177\u7c7b",
+      "token": 200,
+      "index": 19
+    },
+    {
+      "codon": "GAC",
+      "skill": "bdpan-storage",
+      "name_cn": "\u767e\u5ea6\u7f51\u76d8",
+      "category": "\u5de5\u5177\u7c7b",
+      "token": 300,
+      "index": 20
+    },
+    {
+      "codon": "GAT",
+      "skill": "scheduler",
+      "name_cn": "\u5b9a\u65f6\u4efb\u52a1",
+      "category": "\u5de5\u5177\u7c7b",
+      "token": 150,
+      "index": 21
+    },
+    {
+      "codon": "GAA",
+      "skill": "plugin-chart",
+      "name_cn": "\u56fe\u8868\u751f\u6210",
+      "category": "\u53ef\u89c6\u5316",
+      "token": 600,
+      "index": 22
+    },
+    {
+      "codon": "GAG",
+      "skill": "style-transfer",
+      "name_cn": "\u98ce\u683c\u8fc1\u79fb",
+      "category": "\u7f16\u8f91\u7c7b",
+      "token": 1800,
+      "index": 23
+    },
+    {
+      "codon": "TUU",
+      "skill": "memory-image-generation-v2",
+      "name_cn": "MIG\u751f\u56feV2",
+      "category": "\u751f\u56fe\u7c7b",
+      "token": 1600,
+      "index": 24
+    },
+    {
+      "codon": "TUC",
+      "skill": "vision-analyzer",
+      "name_cn": "\u56fe\u50cf\u5206\u6790",
+      "category": "\u8bc6\u522b\u7c7b",
+      "token": 1400,
+      "index": 25
+    },
+    {
+      "codon": "TUA",
+      "skill": "video-gen",
+      "name_cn": "\u89c6\u9891\u751f\u6210",
+      "category": "\u591a\u5a92\u4f53",
+      "token": 2000,
+      "index": 26
+    },
+    {
+      "codon": "TUG",
+      "skill": "audio-transcribe",
+      "name_cn": "\u97f3\u9891\u8f6c\u5f55",
+      "category": "\u591a\u5a92\u4f53",
+      "token": 1100,
+      "index": 27
+    },
+    {
+      "codon": "TAC",
+      "skill": "image-edit",
+      "name_cn": "\u56fe\u50cf\u7f16\u8f91",
+      "category": "\u7f16\u8f91\u7c7b",
+      "token": 700,
+      "index": 28
+    },
+    {
+      "codon": "S",
+      "skill": "runtime-start",
+      "name_cn": "\u95f8\u95e8\u542f\u52a8",
+      "category": "\u8fd0\u884c\u65f6\u7c7b",
+      "token": 100,
+      "index": 101
+    },
+    {
+      "codon": "T",
+      "skill": "runtime-terminate",
+      "name_cn": "\u95f8\u95e8\u505c\u6b62",
+      "category": "\u8fd0\u884c\u65f6\u7c7b",
+      "token": 200,
+      "index": 102
+    },
+    {
+      "codon": "O",
+      "skill": "runtime-loop",
+      "name_cn": "\u5faa\u73af\u6267\u884c",
+      "category": "\u8fd0\u884c\u65f6\u7c7b",
+      "token": 150,
+      "index": 103
+    },
+    {
+      "codon": "P",
+      "skill": "skill-planner",
+      "name_cn": "\u5de5\u4f5c\u6d41\u89c4\u5212",
+      "category": "\u8fd0\u884c\u65f6\u7c7b",
+      "token": 400,
+      "index": 104
+    },
+    {
+      "codon": "J",
+      "skill": "runtime-jump",
+      "name_cn": "\u4f4d\u70b9\u8df3\u8f6c",
+      "category": "\u8fd0\u884c\u65f6\u7c7b",
+      "token": 180,
+      "index": 105
+    },
+    {
+      "codon": "A1",
+      "skill": "novel-writing",
+      "name_cn": "\u5c0f\u8bf4\u521b\u4f5c",
+      "category": "\u521b\u4f5c\u7c7b",
+      "token": 2000,
+      "index": 106
+    },
+    {
+      "codon": "C8",
+      "skill": "character-workflow",
+      "name_cn": "\u4eba\u7269\u591a\u89c6\u56fe",
+      "category": "\u5de5\u4f5c\u6d41\u7c7b",
+      "token": 1500,
+      "index": 107
+    }
+  ]
+}

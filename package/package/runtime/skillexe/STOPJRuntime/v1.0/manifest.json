@@ -1,0 +1,23 @@
+{
+  "name": "C2",
+  "version": "v1.0",
+  "type": "runtime-gate",
+  "description": "STOPJ Runtime闸门技能完整备份",
+  "created": "2026-08-23 14:22:44",
+  "components": {
+    "atoms": 5,
+    "polypeptides": 4,
+    "total_tokens": 1030
+  },
+  "gate_sequence": [
+    "S",
+    "T",
+    "O",
+    "P",
+    "J"
+  ],
+  "aliases": {
+    "/ST": "STOP运行时别名",
+    "/C2": "原始命令"
+  }
+}

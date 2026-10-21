@@ -1,0 +1,54 @@
+{
+  "codon": "STOPJ",
+  "name": "STOPJ\u95f8\u95e8\u63a7\u5236\u94fe",
+  "name_cn": "STOPJ\u8fd0\u884c\u65f6\u95f8\u95e8\u5de5\u4f5c\u6d41",
+  "atoms": [
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "token": 1030,
+  "components": {
+    "S": "\u76f4\u7ebf\u8fd0\u884c - \u6cbf\u751f\u4ea7\u7ba1\u7ebf\u5411\u4e0b\u8fd0\u884c",
+    "T": "\u95f8\u95e8\u505c\u6b62 - \u505c\u6b62\u68c0\u67e5\u6216\u8fd4\u5de5",
+    "O": "\u5faa\u73af - \u6267\u884c\u5faa\u73af\u903b\u8f91",
+    "P": "\u89c4\u5212 - \u89c4\u5212\u5de5\u4f5c\u6d41",
+    "J": "\u8df3\u8f6c - \u4f4d\u70b9\u5f00\u59cb\u6216\u7b49\u5f85\u7ed3\u5408"
+  },
+  "gate_sequence": [
+    {
+      "step": 1,
+      "letter": "S",
+      "action": "start_production"
+    },
+    {
+      "step": 2,
+      "letter": "T",
+      "action": "stop_gate_check"
+    },
+    {
+      "step": 3,
+      "letter": "O",
+      "action": "loop_continue"
+    },
+    {
+      "step": 4,
+      "letter": "P",
+      "action": "plan_next"
+    },
+    {
+      "step": 5,
+      "letter": "J",
+      "action": "jump_to_site"
+    }
+  ],
+  "usage": {
+    "command": "/STOPJ",
+    "shortcut": "S",
+    "context": "Runtime\u95f8\u95e8\u63a7\u5236"
+  },
+  "created": "2026-08-23",
+  "version": "1.0"
+}

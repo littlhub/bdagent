@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能管理C",
+  "name_en": "Skill ManagerC",
+  "nickname": "sman",
+  "abbreviation": "SKMC",
+  "gene_chain": "TC",
+  "atoms": [
+    19
+  ],
+  "description": "技能管理 + C",
+  "codon_level": 2,
+  "file": "TC.json"
+}

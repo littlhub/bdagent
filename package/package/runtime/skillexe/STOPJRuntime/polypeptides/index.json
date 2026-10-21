@@ -1,0 +1,265 @@
+{
+  "version": "2.7",
+  "total": 29,
+  "polypeptides": [
+    {
+      "codon": "AA",
+      "atoms": [
+        2,
+        3
+      ],
+      "token_cost": 4500
+    },
+    {
+      "codon": "AC",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "AG",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "AT",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "CA",
+      "atoms": [
+        12,
+        16,
+        17
+      ],
+      "token_cost": 1250
+    },
+    {
+      "codon": "CC",
+      "atoms": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "token_cost": 3500
+    },
+    {
+      "codon": "CG",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "CT",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "GA",
+      "atoms": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "token_cost": 2850
+    },
+    {
+      "codon": "GC",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "GG",
+      "atoms": [
+        18,
+        19
+      ],
+      "token_cost": 300
+    },
+    {
+      "codon": "GT",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "TA",
+      "atoms": [
+        28
+      ],
+      "token_cost": 700
+    },
+    {
+      "codon": "TC",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "TG",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "TT",
+      "atoms": [],
+      "token_cost": 0
+    },
+    {
+      "codon": "ST",
+      "atoms": [
+        29
+      ],
+      "token_cost": 2000,
+      "name_cn": "闸门直线运行",
+      "description": "STOPJ前两步：直线运行+闸门停止"
+    },
+    {
+      "codon": "TO",
+      "atoms": [
+        29
+      ],
+      "token_cost": 2000,
+      "name_cn": "闸门循环",
+      "description": "STOPJ后两步：循环+规划"
+    },
+    {
+      "codon": "OP",
+      "atoms": [
+        29
+      ],
+      "token_cost": 2000,
+      "name_cn": "闸门规划",
+      "description": "STOPJ中间：循环+规划"
+    },
+    {
+      "codon": "PJ",
+      "atoms": [
+        29
+      ],
+      "token_cost": 2000,
+      "name_cn": "闸门跳转",
+      "description": "STOPJ末尾：规划+位点跳转"
+    },
+    {
+      "codon": "STO",
+      "atoms": [
+        101,
+        102,
+        103
+      ],
+      "token_cost": 450,
+      "description": "启动→停止→循环"
+    },
+    {
+      "codon": "TOP",
+      "atoms": [
+        102,
+        103,
+        104
+      ],
+      "token_cost": 750,
+      "description": "停止→循环→规划"
+    },
+    {
+      "codon": "A1J",
+      "atoms": [
+        106,
+        105
+      ],
+      "token_cost": 2180,
+      "description": "小说创作→位点跳转"
+    },
+    {
+      "codon": "C8P",
+      "atoms": [
+        107,
+        104
+      ],
+      "token_cost": 1900,
+      "description": "人物工作流→规划"
+    },
+    {
+      "codon": "MT",
+      "atoms": [
+        101,
+        102,
+        103,
+        104,
+        105
+      ],
+      "token_cost": 2500,
+      "name_cn": "记忆合并",
+      "description": "2026-08-23与2026-08-24合并多肽"
+    },
+    {
+      "codon": "HM",
+      "atoms": [
+        101,
+        102
+      ],
+      "token_cost": 800,
+      "name_cn": "HERB记忆管理",
+      "description": "HERB知识库API Key管理与记忆同步链"
+    },
+    {
+      "codon": "ID",
+      "atoms": [
+        104,
+        105
+      ],
+      "token_cost": 600,
+      "name_cn": "技能文档整合",
+      "description": "整合多日记忆并生成新技能多肽链"
+    },
+    {
+      "codon": "REM",
+      "atoms": [
+        101,
+        102,
+        103,
+        104,
+        105
+      ],
+      "token_cost": 500,
+      "name_cn": "记忆合并别名",
+      "description": "/REM 快捷命令 - 调用MT多肽"
+    },
+    {
+      "codon": "SI",
+      "atoms": [
+        101,
+        102
+      ],
+      "token_cost": 1500,
+      "name_cn": "技能安装",
+      "description": "/SI - SECURE_INSTALL技能安装与备份（原C3）"
+    },
+    {
+      "codon": "CR",
+      "atoms": [
+        103,
+        104,
+        105
+      ],
+      "token_cost": 1200,
+      "name_cn": "加密传输",
+      "description": "/CR - CRYPTO加密传输工具（原C4）"
+    },
+    {
+      "codon": "SM",
+      "atoms": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "token_cost": 2000,
+      "name_cn": "技能管理器",
+      "description": "/SM - skill_manager完整生命周期管理（备份/安装/创建/删除/加密解密）"
+    }
+  ]
+}

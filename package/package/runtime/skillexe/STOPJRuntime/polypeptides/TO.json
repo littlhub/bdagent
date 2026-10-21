@@ -1,0 +1,10 @@
+{
+  "codon": "TO",
+  "atoms": [
+    102,
+    103
+  ],
+  "token_cost": 2000,
+  "name_cn": "\u95f8\u95e8\u5faa\u73af",
+  "description": "\u505c\u6b62\u68c0\u67e5\u2192\u5faa\u73af\uff0c\u53ef\u5faa\u73af\u95f8\u95e8"
+}

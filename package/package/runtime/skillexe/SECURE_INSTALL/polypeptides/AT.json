@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "安全安装T",
+  "name_en": "Secure InstallT",
+  "nickname": "sinst",
+  "abbreviation": "SEIT",
+  "gene_chain": "AT",
+  "atoms": [
+    12
+  ],
+  "description": "安全安装 + T",
+  "codon_level": 2,
+  "file": "AT.json"
+}

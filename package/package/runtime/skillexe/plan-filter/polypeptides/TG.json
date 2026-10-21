@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "计划过滤G",
+  "name_en": "Plan FilterG",
+  "nickname": "pf",
+  "abbreviation": "PLFG",
+  "gene_chain": "TG",
+  "atoms": [
+    16
+  ],
+  "description": "计划过滤 + G",
+  "codon_level": 2,
+  "file": "TG.json"
+}

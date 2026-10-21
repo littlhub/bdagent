@@ -1,0 +1,5 @@
+{
+  "api_key": "sk-替换为你的真实Key",
+  "base_url": "https://apihub.agnes-ai.com/v1",
+  "model": "agnes-2.5-flash"
+}

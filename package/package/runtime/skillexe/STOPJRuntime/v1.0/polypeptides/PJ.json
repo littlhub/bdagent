@@ -1,0 +1,6 @@
+{
+  "codon": "PJ",
+  "atoms": [104, 105],
+  "token_cost": 580,
+  "description": "规划→跳转，生成计划后跳转执行"
+}

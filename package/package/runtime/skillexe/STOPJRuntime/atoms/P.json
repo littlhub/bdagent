@@ -1,0 +1,13 @@
+{
+  "codon": "P",
+  "skill": "skill-planner",
+  "name_cn": "工作流规划",
+  "category": "运行时类",
+  "token": 400,
+  "index": 104,
+  "description": "Plan工作流，生成和执行计划链",
+  "params": {
+    "mode": "auto",
+    "parallel": true
+  }
+}

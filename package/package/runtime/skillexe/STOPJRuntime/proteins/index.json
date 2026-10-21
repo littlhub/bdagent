@@ -1,0 +1,255 @@
+{
+  "version": "2.2",
+  "total": 16,
+  "proteins": [
+    {
+      "codon": "AAA",
+      "name": "MIG记忆同步链",
+      "atoms": [
+        1,
+        5,
+        1
+      ],
+      "token": 3100
+    },
+    {
+      "codon": "AAT",
+      "name": "MIG视觉识别链",
+      "atoms": [
+        1,
+        4,
+        4
+      ],
+      "token": 4100
+    },
+    {
+      "codon": "AAC",
+      "name": "丝袜写真链",
+      "atoms": [
+        1,
+        2,
+        4
+      ],
+      "token": 4300
+    },
+    {
+      "codon": "ACA",
+      "name": "MIG全链路",
+      "atoms": [
+        1,
+        2,
+        1
+      ],
+      "token": 4500
+    },
+    {
+      "codon": "ATC",
+      "name": "双肽链交互",
+      "atoms": [
+        1,
+        4,
+        2
+      ],
+      "token": 4500
+    },
+    {
+      "codon": "ATT",
+      "name": "美甲识别链",
+      "atoms": [
+        1,
+        4,
+        4
+      ],
+      "token": 4100
+    },
+    {
+      "codon": "CCC",
+      "name": "Office办公链",
+      "atoms": [
+        8,
+        9,
+        10
+      ],
+      "token": 2500
+    },
+    {
+      "codon": "CCG",
+      "name": "文档处理链",
+      "atoms": [
+        8,
+        11,
+        13
+      ],
+      "token": 2500
+    },
+    {
+      "codon": "GGA",
+      "name": "工具链",
+      "atoms": [
+        18,
+        19,
+        20
+      ],
+      "token": 600
+    },
+    {
+      "codon": "CGU",
+      "name": "代码审查链",
+      "atoms": [
+        12,
+        13,
+        15
+      ],
+      "token": 1500
+    },
+    {
+      "codon": "AGA",
+      "name": "YouTube+网盘",
+      "atoms": [
+        6,
+        20,
+        18
+      ],
+      "token": 1600
+    },
+    {
+      "codon": "CAA",
+      "name": "技能执行链",
+      "atoms": [
+        16,
+        17,
+        15
+      ],
+      "token": 1050
+    },
+    {
+      "codon": "STOPJ",
+      "name": "STOPJ闸门控制链",
+      "name_cn": "STOPJ运行时闸门工作流",
+      "atoms": [
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "token": 2000
+    },
+    {
+      "codon": "STOTOPJA1JC8PAUG",
+      "name": "小说创作视频链",
+      "name_cn": "STOPJ闸门+小说创作+视频生成",
+      "atoms": [
+        101,
+        102,
+        103,
+        102,
+        103,
+        104,
+        105,
+        106,
+        105,
+        107,
+        104,
+        1,
+        102,
+        103,
+        102
+      ],
+      "token": 6880,
+      "phases": {
+        "phase1": {
+          "name": "STOPJ闸门",
+          "atoms": [
+            101,
+            102,
+            103,
+            102,
+            103,
+            104,
+            105
+          ],
+          "token": 1030
+        },
+        "phase2": {
+          "name": "A1小说创作",
+          "atoms": [
+            106
+          ],
+          "token": 2000
+        },
+        "phase3": {
+          "name": "C8人物工作流",
+          "atoms": [
+            107
+          ],
+          "token": 1500
+        },
+        "phase4": {
+          "name": "P规划优化",
+          "atoms": [
+            104
+          ],
+          "token": 400
+        },
+        "phase5": {
+          "name": "AUG生视频",
+          "atoms": [
+            1
+          ],
+          "token": 1500
+        },
+        "phase6": {
+          "name": "TOT停止",
+          "atoms": [
+            102,
+            103,
+            102
+          ],
+          "token": 450
+        }
+      },
+      "usage": "/STOTOPJA1JC8PAUG 或 /novel-video"
+    },
+    {
+      "codon": "STOTOTOPJA1JC8PAUG",
+      "name": "小说创作视频链",
+      "atoms": [
+        101,
+        102,
+        103,
+        102,
+        103,
+        104,
+        105,
+        2,
+        105,
+        107,
+        104,
+        1,
+        102,
+        103,
+        102,
+        102
+      ],
+      "token": 6880
+    },
+    {
+      "codon": "HMID",
+      "name": "HERB记忆管理与整合链",
+      "name_cn": "HERB记忆管理与整合工作流",
+      "atoms": [
+        101,
+        102,
+        104,
+        105
+      ],
+      "polypeptides": [
+        "HM",
+        "ID"
+      ],
+      "token": 1400,
+      "description": "整合HERB API Key管理与记忆整合功能的完整工作流蛋白链"
+    }
+  ]
+}

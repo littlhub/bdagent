@@ -1,0 +1,17 @@
+{
+  "codon": "C8",
+  "skill": "character-workflow",
+  "name_cn": "\u4eba\u7269\u591a\u89c6\u56fe\u5de5\u4f5c\u6d41",
+  "category": "\u5de5\u4f5c\u6d41\u7c7b",
+  "token": 1500,
+  "index": 107,
+  "description": "C8\u4eba\u7269\u591a\u89c6\u56fe\u5de5\u4f5c\u6d41\u6267\u884c",
+  "params": {
+    "views": [
+      "front",
+      "side",
+      "back"
+    ],
+    "style": "realistic"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "闸门运行时A",
+  "name_en": "STOPJ RuntimeA",
+  "nickname": "stopj",
+  "abbreviation": "STRA",
+  "gene_chain": "AA",
+  "atoms": [
+    13
+  ],
+  "description": "闸门运行时 + A",
+  "codon_level": 2,
+  "file": "AA.json"
+}

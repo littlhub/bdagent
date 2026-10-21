@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "闸门运行时C",
+  "name_en": "STOPJ RuntimeC",
+  "nickname": "stopj",
+  "abbreviation": "STRC",
+  "gene_chain": "AC",
+  "atoms": [
+    13
+  ],
+  "description": "闸门运行时 + C",
+  "codon_level": 2,
+  "file": "AC.json"
+}

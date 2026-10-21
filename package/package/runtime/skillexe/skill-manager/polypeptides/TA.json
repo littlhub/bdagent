@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能管理A",
+  "name_en": "Skill ManagerA",
+  "nickname": "sman",
+  "abbreviation": "SKMA",
+  "gene_chain": "TA",
+  "atoms": [
+    19
+  ],
+  "description": "技能管理 + A",
+  "codon_level": 2,
+  "file": "TA.json"
+}

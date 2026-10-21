@@ -1,0 +1,8 @@
+{
+  "name": "S",
+  "index": 101,
+  "description": "启动闸门 - 开始执行工作流",
+  "type": "atom",
+  "category": "control",
+  "token_cost": 100
+}

@@ -1,0 +1,22 @@
+{
+  "index": 16,
+  "skill": "plan-filter",
+  "name_cn": "计划过滤",
+  "name_en": "Plan Filter",
+  "nickname": "pf",
+  "abbreviation": "PLF",
+  "gene_code": "T",
+  "gene_name": "Thymine",
+  "type": "安全类",
+  "codon_level": 1,
+  "parent_codon": null,
+  "children_codons": [
+    "TA",
+    "TT",
+    "TC",
+    "TG"
+  ],
+  "hash": "atom_T16_pf",
+  "description": "防止发送完整密码和密钥",
+  "file": "T16.pf.json"
+}

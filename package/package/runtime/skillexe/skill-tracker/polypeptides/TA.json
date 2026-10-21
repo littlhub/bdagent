@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能追踪A",
+  "name_en": "Skill TrackerA",
+  "nickname": "stracker",
+  "abbreviation": "SKTA",
+  "gene_chain": "TA",
+  "atoms": [
+    18
+  ],
+  "description": "技能追踪 + A",
+  "codon_level": 2,
+  "file": "TA.json"
+}

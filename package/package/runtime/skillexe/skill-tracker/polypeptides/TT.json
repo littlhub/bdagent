@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能追踪T",
+  "name_en": "Skill TrackerT",
+  "nickname": "stracker",
+  "abbreviation": "SKTT",
+  "gene_chain": "TT",
+  "atoms": [
+    18
+  ],
+  "description": "技能追踪 + T",
+  "codon_level": 2,
+  "file": "TT.json"
+}

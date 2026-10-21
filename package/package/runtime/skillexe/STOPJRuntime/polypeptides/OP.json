@@ -1,0 +1,6 @@
+{
+  "codon": "OP",
+  "atoms": [103, 104],
+  "token_cost": 550,
+  "description": "循环→规划，循环执行中动态规划"
+}

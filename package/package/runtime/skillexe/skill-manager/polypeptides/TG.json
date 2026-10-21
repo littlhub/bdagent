@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能管理G",
+  "name_en": "Skill ManagerG",
+  "nickname": "sman",
+  "abbreviation": "SKMG",
+  "gene_chain": "TG",
+  "atoms": [
+    19
+  ],
+  "description": "技能管理 + G",
+  "codon_level": 2,
+  "file": "TG.json"
+}

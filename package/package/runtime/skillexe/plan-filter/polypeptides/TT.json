@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "计划过滤T",
+  "name_en": "Plan FilterT",
+  "nickname": "pf",
+  "abbreviation": "PLFT",
+  "gene_chain": "TT",
+  "atoms": [
+    16
+  ],
+  "description": "计划过滤 + T",
+  "codon_level": 2,
+  "file": "TT.json"
+}

@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "计划过滤A",
+  "name_en": "Plan FilterA",
+  "nickname": "pf",
+  "abbreviation": "PLFA",
+  "gene_chain": "TA",
+  "atoms": [
+    16
+  ],
+  "description": "计划过滤 + A",
+  "codon_level": 2,
+  "file": "TA.json"
+}

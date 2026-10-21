@@ -1,0 +1,13 @@
+{
+  "codon": "O",
+  "skill": "runtime-loop",
+  "name_cn": "循环执行",
+  "category": "运行时类",
+  "token": 150,
+  "index": 103,
+  "description": "循环执行工作流，支持嵌套和条件循环",
+  "params": {
+    "iterations": -1,
+    "condition": null
+  }
+}

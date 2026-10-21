@@ -1,0 +1,13 @@
+{
+  "codon": "A1",
+  "skill": "novel-writing",
+  "name_cn": "\u5c0f\u8bf4\u521b\u4f5c",
+  "category": "\u521b\u4f5c\u7c7b",
+  "token": 2000,
+  "index": 106,
+  "description": "\u5199\u5c0f\u8bf4\u521b\u4f5c\u8d77\u70b9\uff0c\u751f\u6210\u5c0f\u8bf4\u5185\u5bb9",
+  "params": {
+    "genre": "novel",
+    "style": "creative"
+  }
+}

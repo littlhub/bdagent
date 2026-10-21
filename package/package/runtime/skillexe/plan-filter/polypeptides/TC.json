@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "计划过滤C",
+  "name_en": "Plan FilterC",
+  "nickname": "pf",
+  "abbreviation": "PLFC",
+  "gene_chain": "TC",
+  "atoms": [
+    16
+  ],
+  "description": "计划过滤 + C",
+  "codon_level": 2,
+  "file": "TC.json"
+}

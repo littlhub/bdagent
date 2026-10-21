@@ -1,0 +1,21 @@
+{
+  "name": "SI",
+  "index": 111,
+  "description": "SECURE_INSTALL技能 - 技能安装与备份多肽（原C3）",
+  "type": "polypeptide",
+  "alias": {
+    "command": "/SI",
+    "skill": "SECURE_INSTALL",
+    "original": "C3",
+    "description": "技能安装与备份 - 使用cow install安装，STOPJRuntime备份"
+  },
+  "atoms": [101, 102],
+  "token_cost": 1500,
+  "dependencies": ["STOPJRuntime"],
+  "features": [
+    "技能安装",
+    "多肽备份",
+    "版本管理",
+    "批量操作"
+  ]
+}

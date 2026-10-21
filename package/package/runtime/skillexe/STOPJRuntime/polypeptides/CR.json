@@ -1,0 +1,21 @@
+{
+  "name": "CR",
+  "index": 112,
+  "description": "CRYPTO加密工具 - 技能加密传输多肽（原C4）",
+  "type": "polypeptide",
+  "alias": {
+    "command": "/CR",
+    "skill": "CRYPTO",
+    "original": "C4",
+    "description": "加密传输工具 - Fernet/AES标准加密"
+  },
+  "atoms": [103, 104, 105],
+  "token_cost": 1200,
+  "dependencies": ["python:cryptography"],
+  "features": [
+    "Fernet加密",
+    "AES-GCM加密",
+    "密钥生成",
+    "批量处理"
+  ]
+}

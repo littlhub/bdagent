@@ -1,0 +1,8 @@
+{
+  "name": "T",
+  "index": 102,
+  "description": "停止检查 - 验证执行结果",
+  "type": "atom",
+  "category": "control",
+  "token_cost": 200
+}

@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "安全安装G",
+  "name_en": "Secure InstallG",
+  "nickname": "sinst",
+  "abbreviation": "SEIG",
+  "gene_chain": "AG",
+  "atoms": [
+    12
+  ],
+  "description": "安全安装 + G",
+  "codon_level": 2,
+  "file": "AG.json"
+}

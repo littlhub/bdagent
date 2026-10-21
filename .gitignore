@@ -1,0 +1,34 @@
+# ===== 敏感信息：任何位置都不提交 =====
+key.json
+*key*.json
+!key.example.json
+.workbuddy/
+.dbagent/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ===== 运行产物 =====
+package/treegraph_full.json
+package/treemind.html
+workspace/data/work/
+*.log
+
+# ===== Node =====
+node_modules/
+
+# ===== 编辑器/系统 =====
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+
+# ===== 遗留副本（确认无误后可删除整个目录）=====
+_legacy_dupes/
+
+# 路由缓存（自动生成）
+route_cache.json

@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能追踪G",
+  "name_en": "Skill TrackerG",
+  "nickname": "stracker",
+  "abbreviation": "SKTG",
+  "gene_chain": "TG",
+  "atoms": [
+    18
+  ],
+  "description": "技能追踪 + G",
+  "codon_level": 2,
+  "file": "TG.json"
+}

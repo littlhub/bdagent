@@ -1,0 +1,43 @@
+{
+  "codon": "STO",
+  "skill": "stopj-runtime-gate",
+  "name_cn": "STOPJ闸门控制",
+  "category": "Runtime类",
+  "description": "STOPJ运行时闸门工作流：S直线运行→T停止检查→O循环→P规划→J位点跳转",
+  "components": {
+    "S": {
+      "name": "直线运行",
+      "function": "沿生产管线向下运行",
+      "action": "start_production_line"
+    },
+    "T": {
+      "name": "闸门停止",
+      "function": "停止检查或返工",
+      "action": "stop_gate_check"
+    },
+    "O": {
+      "name": "循环",
+      "function": "执行循环逻辑",
+      "action": "loop_execute"
+    },
+    "P": {
+      "name": "规划工作流",
+      "function": "规划下一个工作流",
+      "action": "plan_workflow"
+    },
+    "J": {
+      "name": "位点跳转",
+      "function": "开始或等待结合位点",
+      "action": "jump_to_site"
+    }
+  },
+  "workflow": {
+    "sequence": ["S", "T", "O", "P", "J"],
+    "gate_types": ["stop_gate", "check_gate", "loop_gate"],
+    "jump_sites": ["start_site", "wait_site", "merge_site"]
+  },
+  "token": 2000,
+  "index": 29,
+  "created": "2026-08-23",
+  "version": "1.0"
+}

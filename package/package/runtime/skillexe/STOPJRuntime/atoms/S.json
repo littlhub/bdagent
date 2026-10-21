@@ -1,0 +1,13 @@
+{
+  "codon": "S",
+  "skill": "runtime-start",
+  "name_cn": "闸门启动",
+  "category": "运行时类",
+  "token": 100,
+  "index": 101,
+  "description": "直线安管线向下运行，启动闸门执行流程",
+  "params": {
+    "direction": "down",
+    "mode": "linear"
+  }
+}

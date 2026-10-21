@@ -1,0 +1,10 @@
+{
+  "codon": "ST",
+  "atoms": [
+    101,
+    102
+  ],
+  "token_cost": 2000,
+  "name_cn": "\u95f8\u95e8\u76f4\u7ebf\u8fd0\u884c",
+  "description": "\u542f\u52a8\u2192\u505c\u6b62\u68c0\u67e5\uff0c\u5355\u6b21\u6267\u884c\u95f8\u95e8"
+}

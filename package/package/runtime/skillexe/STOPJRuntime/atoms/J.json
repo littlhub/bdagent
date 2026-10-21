@@ -1,0 +1,13 @@
+{
+  "codon": "J",
+  "skill": "runtime-jump",
+  "name_cn": "位点跳转",
+  "category": "运行时类",
+  "token": 180,
+  "index": 105,
+  "description": "跳转到开始或等待结合位点，支持条件跳转",
+  "params": {
+    "target": "start",
+    "wait_binding": true
+  }
+}

@@ -1,0 +1,260 @@
+{
+  "codon": "STOTOTOPJA1JC8PAUG",
+  "name": "\u5c0f\u8bf4\u521b\u4f5c\u89c6\u9891\u94fe",
+  "name_cn": "STOPJ\u95f8\u95e8\u5c0f\u8bf4\u521b\u4f5c\u4e0e\u89c6\u9891\u751f\u6210\u5de5\u4f5c\u6d41",
+  "description": "\u57fa\u4e8eSTOPJ\u95f8\u95e8\u7684\u5c0f\u8bf4\u521b\u4f5c+\u89c6\u9891\u751f\u6210\u590d\u5408\u5de5\u4f5c\u6d41",
+  "atoms": [
+    101,
+    102,
+    103,
+    102,
+    103,
+    104,
+    105,
+    2,
+    105,
+    107,
+    104,
+    1,
+    102,
+    103,
+    102,
+    102
+  ],
+  "token": 6880,
+  "structure": {
+    "gate_sequence": {
+      "steps": [
+        {
+          "code": "S",
+          "index": 101,
+          "action": "\u95f8\u95e8\u542f\u52a8",
+          "token": 100
+        },
+        {
+          "code": "T",
+          "index": 102,
+          "action": "\u505c\u6b62\u68c0\u67e5",
+          "token": 200
+        },
+        {
+          "code": "O",
+          "index": 103,
+          "action": "\u5faa\u73af\u6267\u884c",
+          "token": 150
+        },
+        {
+          "code": "T",
+          "index": 102,
+          "action": "\u505c\u6b62\u68c0\u67e5",
+          "token": 200
+        },
+        {
+          "code": "O",
+          "index": 103,
+          "action": "\u5faa\u73af\u6267\u884c",
+          "token": 150
+        },
+        {
+          "code": "P",
+          "index": 104,
+          "action": "\u89c4\u5212\u5de5\u4f5c\u6d41",
+          "token": 400
+        }
+      ],
+      "total_token": 1200
+    },
+    "novel_sequence": {
+      "steps": [
+        {
+          "code": "J",
+          "index": 105,
+          "action": "\u8df3\u8f6c",
+          "token": 180
+        },
+        {
+          "code": "A1",
+          "index": 2,
+          "action": "\u5c0f\u8bf4\u521b\u4f5c",
+          "token": 800
+        },
+        {
+          "code": "J",
+          "index": 105,
+          "action": "\u8df3\u8f6c",
+          "token": 180
+        },
+        {
+          "code": "C8",
+          "index": 107,
+          "action": "\u4eba\u7269\u591a\u89c6\u56fe",
+          "token": 1500
+        },
+        {
+          "code": "P",
+          "index": 104,
+          "action": "\u89c4\u5212\u5199\u5c0f\u8bf4",
+          "token": 400
+        }
+      ],
+      "total_token": 2260
+    },
+    "branch_sequence": {
+      "trigger": "AUG",
+      "steps": [
+        {
+          "code": "AUG",
+          "index": 1,
+          "action": "MIG\u751f\u56fe",
+          "token": 1500
+        },
+        {
+          "code": "video",
+          "index": null,
+          "action": "\u751f\u89c6\u9891",
+          "token": 0
+        },
+        {
+          "code": "T",
+          "index": 102,
+          "action": "\u505c\u6b62",
+          "token": 200
+        },
+        {
+          "code": "O",
+          "index": 103,
+          "action": "\u5faa\u73af",
+          "token": 150
+        },
+        {
+          "code": "T",
+          "index": 102,
+          "action": "\u505c\u6b62\u68c0\u67e5",
+          "token": 200
+        },
+        {
+          "code": "T",
+          "index": 102,
+          "action": "\u505c\u6b62",
+          "token": 200
+        }
+      ],
+      "total_token": 2250
+    }
+  },
+  "workflow": [
+    {
+      "step": 1,
+      "code": "S",
+      "action": "\u95f8\u95e8\u542f\u52a8",
+      "type": "gate"
+    },
+    {
+      "step": 2,
+      "code": "T",
+      "action": "\u505c\u6b62\u68c0\u67e5",
+      "type": "gate"
+    },
+    {
+      "step": 3,
+      "code": "O",
+      "action": "\u5faa\u73af\u6267\u884c",
+      "type": "gate"
+    },
+    {
+      "step": 4,
+      "code": "T",
+      "action": "\u505c\u6b62\u68c0\u67e5",
+      "type": "gate"
+    },
+    {
+      "step": 5,
+      "code": "O",
+      "action": "\u5faa\u73af\u6267\u884c",
+      "type": "gate"
+    },
+    {
+      "step": 6,
+      "code": "P",
+      "action": "\u89c4\u5212\u5de5\u4f5c\u6d41",
+      "type": "gate"
+    },
+    {
+      "step": 7,
+      "code": "J",
+      "action": "\u8df3\u8f6c",
+      "type": "link"
+    },
+    {
+      "step": 8,
+      "code": "A1",
+      "action": "\u5c0f\u8bf4\u521b\u4f5c",
+      "type": "main"
+    },
+    {
+      "step": 9,
+      "code": "J",
+      "action": "\u8df3\u8f6c",
+      "type": "link"
+    },
+    {
+      "step": 10,
+      "code": "C8",
+      "action": "\u4eba\u7269\u591a\u89c6\u56fe",
+      "type": "main"
+    },
+    {
+      "step": 11,
+      "code": "P",
+      "action": "\u89c4\u5212\u5199\u5c0f\u8bf4",
+      "type": "main"
+    },
+    {
+      "step": 12,
+      "code": "AUG",
+      "action": "MIG\u751f\u56fe(\u5206\u652f)",
+      "type": "branch"
+    },
+    {
+      "step": 13,
+      "code": "video",
+      "action": "\u751f\u89c6\u9891",
+      "type": "branch"
+    },
+    {
+      "step": 14,
+      "code": "T",
+      "action": "\u505c\u6b62",
+      "type": "branch"
+    },
+    {
+      "step": 15,
+      "code": "O",
+      "action": "\u5faa\u73af",
+      "type": "branch"
+    },
+    {
+      "step": 16,
+      "code": "T",
+      "action": "\u505c\u6b62\u68c0\u67e5",
+      "type": "branch"
+    },
+    {
+      "step": 17,
+      "code": "T",
+      "action": "\u505c\u6b62",
+      "type": "branch"
+    }
+  ],
+  "usage": {
+    "command": "/STOTOTOPJA1JC8PAUG",
+    "shortcuts": [
+      "/novel",
+      "/story",
+      "/creative-workflow"
+    ],
+    "context": "\u5c0f\u8bf4\u521b\u4f5c\u4e0e\u89c6\u9891\u751f\u6210"
+  },
+  "version": "1.0",
+  "created": "2026-08-23"
+}

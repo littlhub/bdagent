@@ -1,0 +1,19 @@
+{
+  "name": "REM",
+  "index": 110,
+  "description": "记忆合并快捷别名 - 调用MT多肽执行记忆合并",
+  "type": "polypeptide",
+  "alias": {
+    "command": "/REM",
+    "parent": "MT",
+    "description": "Memory Merge 快捷命令"
+  },
+  "atoms": [101, 102, 103, 104, 105],
+  "token_cost": 500,
+  "merge_info": {
+    "type": "alias",
+    "target": "MT (index 109)",
+    "source": "memory/2026-08-23.md + memory/2026-08-24.md",
+    "output": "MEMORY.md (合并版)"
+  }
+}

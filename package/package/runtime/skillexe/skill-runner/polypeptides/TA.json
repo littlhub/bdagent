@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能执行A",
+  "name_en": "Skill RunnerA",
+  "nickname": "srunner",
+  "abbreviation": "SKRA",
+  "gene_chain": "TA",
+  "atoms": [
+    20
+  ],
+  "description": "技能执行 + A",
+  "codon_level": 2,
+  "file": "TA.json"
+}

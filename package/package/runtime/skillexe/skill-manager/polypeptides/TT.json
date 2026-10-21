@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能管理T",
+  "name_en": "Skill ManagerT",
+  "nickname": "sman",
+  "abbreviation": "SKMT",
+  "gene_chain": "TT",
+  "atoms": [
+    19
+  ],
+  "description": "技能管理 + T",
+  "codon_level": 2,
+  "file": "TT.json"
+}

@@ -1,0 +1,75 @@
+{
+  "version": "7.0",
+  "description": "快捷命令映射 - 自然语言/别名/密码子映射",
+  
+  "atom_commands": {
+    "/AUG": {"codon": "AUG", "gene": "GENE-01", "skill": "memory-image-generation", "level": "atom", "name": "MIG记忆生图"},
+    "/AAU": {"codon": "AAU", "gene": "GENE-02", "skill": "agnes-image", "level": "atom", "name": "Agnes文生图"},
+    "/AAC": {"codon": "AAC", "gene": "GENE-12", "skill": "agnes-image-v2", "level": "atom", "name": "Agnes增强版"},
+    "/AUU": {"codon": "AUU", "gene": "GENE-03", "skill": "visioncustom", "level": "atom", "name": "视觉识别原子"},
+    "/AUC": {"codon": "AUC", "gene": "GENE-13", "skill": "visioncustom-v2", "level": "atom", "name": "视觉识别V2"},
+    "/GGU": {"codon": "GGU", "gene": "GENE-04", "skill": "send", "level": "atom", "name": "文件发送"},
+    "/GGC": {"codon": "GGC", "gene": "GENE-14", "skill": "send-enhanced", "level": "atom", "name": "发送增强"},
+    "/GGA": {"codon": "GGA", "gene": "GENE-15", "skill": "bdpan-storage", "level": "atom", "name": "百度网盘"},
+    "/CCU": {"codon": "CCU", "gene": "GENE-05", "skill": "docx", "level": "atom", "name": "Word处理"},
+    "/CCC": {"codon": "CCC", "gene": "GENE-06", "skill": "xlsx", "level": "atom", "name": "Excel处理"},
+    "/CCA": {"codon": "CCA", "gene": "GENE-07", "skill": "pptx", "level": "atom", "name": "PPT处理"},
+    "/CCG": {"codon": "CCG", "gene": "GENE-08", "skill": "pdf", "level": "atom", "name": "PDF处理"},
+    "/ACU": {"codon": "ACU", "gene": "GENE-25", "skill": "memory-sync", "level": "atom", "name": "记忆同步原子"},
+    "/ACC": {"codon": "ACC", "gene": "GENE-16", "skill": "memory-sync-v2", "level": "atom", "name": "记忆同步增强"},
+    "/CGU": {"codon": "CGU", "gene": "GENE-09", "skill": "code-reviewer", "level": "atom", "name": "代码审查原子"},
+    "/CGC": {"codon": "CGC", "gene": "GENE-17", "skill": "skill-planner", "level": "atom", "name": "技能规划原子"},
+    "/CGA": {"codon": "CGA", "gene": "GENE-18", "skill": "skill-runner", "level": "atom", "name": "技能执行原子"},
+    "/CUU": {"codon": "CUU", "gene": "GENE-10", "skill": "markdown-converter", "level": "atom", "name": "Markdown转换原子"},
+    "/CUC": {"codon": "CUC", "gene": "GENE-19", "skill": "web-summarizer", "level": "atom", "name": "网页摘要原子"},
+    "/CAU": {"codon": "CAU", "gene": "GENE-11", "skill": "plugin-chart", "level": "atom", "name": "图表生成原子"},
+    "/CAC": {"codon": "CAC", "gene": "GENE-20", "skill": "skill-capsule-lib", "level": "atom", "name": "技能胶囊库原子"},
+    "/UAU": {"codon": "UAU", "gene": "GENE-21", "skill": "youtube-watcher", "level": "atom", "name": "YouTube分析原子"},
+    "/UAC": {"codon": "UAC", "gene": "GENE-22", "skill": "exec-oraybox-api", "level": "atom", "name": "Oraybox通信原子"},
+    "/UAG": {"codon": "UAG", "gene": "GENE-23", "skill": "skill-tracker", "level": "atom", "name": "技能追踪原子"}
+  },
+  
+  "polypeptide_commands": {
+    "/AUGAAU": {"chain": "AUGAAU", "level": "polypeptide", "name": "双生图链", "genes": ["GENE-01", "GENE-02"]},
+    "/AUGAAUAUU": {"chain": "AUGAAUAUU", "level": "protein", "name": "生图识别链", "genes": ["GENE-01", "GENE-02", "GENE-03"]},
+    "/AUGGGU": {"chain": "AUGGGU", "level": "polypeptide", "name": "生图发送链", "genes": ["GENE-01", "GENE-04"]},
+    "/AUGAAUCCU": {"chain": "AUGAAUCCU", "level": "protein", "name": "生图文档链", "genes": ["GENE-01", "GENE-02", "GENE-05"]},
+    "/AUUGGU": {"chain": "AUUGGU", "level": "polypeptide", "name": "识别发送链", "genes": ["GENE-03", "GENE-04"]}
+  },
+  
+  "protein_aliases": {
+    "/A": {"target": "/AUGAAU", "name": "双生图链", "chain": "AUGAAU"},
+    "/B": {"target": "/AUGAAUAUU", "name": "生图识别链", "chain": "AUGAAUAUU"},
+    "/C": {"target": "/AUGGGU", "name": "生图发送链", "chain": "AUGGGU"},
+    "/D": {"target": "/AUGAAUCCU", "name": "生图文档链", "chain": "AUGAAUCCU"},
+    "/E": {"target": "/AUUGGU", "name": "识别发送链", "chain": "AUUGGU"}
+  },
+  
+  "keyword_mappings": {
+    "MIG": {"target": "/AUG", "type": "atom"},
+    "生图": {"target": "/AAU", "type": "atom"},
+    "识别": {"target": "/AUU", "type": "atom"},
+    "发送": {"target": "/GGU", "type": "atom"},
+    "Word": {"target": "/CCU", "type": "atom"},
+    "Excel": {"target": "/CCC", "type": "atom"},
+    "PPT": {"target": "/CCA", "type": "atom"},
+    "PDF": {"target": "/CCG", "type": "atom"},
+    "记忆": {"target": "/ACU", "type": "atom"},
+    "代码": {"target": "/CGU", "type": "atom"},
+    "图表": {"target": "/CAU", "type": "atom"},
+    "YouTube": {"target": "/UAU", "type": "atom"},
+    "网盘": {"target": "/GGA", "type": "atom"},
+    "转换": {"target": "/CUU", "type": "atom"},
+    "摘要": {"target": "/CUC", "type": "atom"}
+  },
+  
+  "natural_language_patterns": {
+    "生成图片": {"keywords": ["生成", "图片", "画图"], "target": "/AAU"},
+    "从记忆生成": {"keywords": ["记忆", "知识库", "HERB"], "target": "/AUG"},
+    "识别图片": {"keywords": ["识别", "分析", "看图"], "target": "/AUU"},
+    "发送文件": {"keywords": ["发送", "分享", "传输"], "target": "/GGU"},
+    "PDF转Word": {"keywords": ["PDF", "Word", "转换"], "target": "/CCGCCU"},
+    "代码审查": {"keywords": ["代码", "审查", "review"], "target": "/CGU"},
+    "YouTube摘要": {"keywords": ["YouTube", "视频", "摘要"], "target": "/UAUCUC"}
+  }
+}

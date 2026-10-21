@@ -1,0 +1,37 @@
+{
+  "name": "STOPJRuntime",
+  "version": "2.5",
+  "type": "skill-runtime",
+  "description": "STOPJ Runtime闸门技能 - 完整多肽库（含HERB记忆管理）",
+  "created": "2026-08-23_142744",
+  "updated": "2026-08-24_051217",
+  "components": {
+    "atoms": 37,
+    "polypeptides": 26,
+    "proteins": 17,
+    "total": 80
+  },
+  "features": [
+    "STOPJ Runtime闸门控制",
+    "小说创作视频链",
+    "MIG记忆同步链",
+    "HERB知识库管理",
+    "技能文档整合"
+  ],
+  "shortcuts": {
+    "ST": "STOP运行时（推荐）",
+    "SR": "STOPJRuntime快捷别名（新）",
+    "S": "启动闸门",
+    "T": "停止检查",
+    "O": "循环执行",
+    "P": "规划工作流",
+    "J": "位点跳转",
+    "HM": "HERB记忆管理",
+    "ID": "技能文档整合",
+    "HMID": "HERB记忆管理与整合",
+    "REM": "记忆合并快捷命令"
+  },
+  "aliases": {
+    "C2": "deprecated - redirects to STOPJRuntime"
+  }
+}

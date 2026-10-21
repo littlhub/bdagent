@@ -1,0 +1,38 @@
+{
+  "name": "plan-filter",
+  "version": "1.0",
+  "description": "计划过滤器 - 防止向大模型发送完整密码和密钥",
+  "author": "Agnes AI",
+  "created_at": "2026-08-24T06:32:00Z",
+  "metadata": {
+    "cowagent": {
+      "always": true
+    },
+    "requires": {
+      "python": ["re", "sys", "argparse"]
+    }
+  },
+  "commands": [
+    {
+      "name": "/PF",
+      "description": "PLAN过滤器主入口"
+    },
+    {
+      "name": "/PF filter",
+      "description": "过滤文本中的敏感信息"
+    },
+    {
+      "name": "/PF filter --file",
+      "description": "从文件读取并过滤"
+    },
+    {
+      "name": "/PF filter --details",
+      "description": "显示脱敏详情"
+    }
+  ],
+  "files": [
+    "SKILL.md",
+    "manifest.json",
+    "scripts/filter.py"
+  ]
+}

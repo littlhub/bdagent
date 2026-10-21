@@ -1,0 +1,21 @@
+{
+  "codon": "HM",
+  "atoms": [
+    101,
+    102
+  ],
+  "token_cost": 800,
+  "name_cn": "HERB记忆管理",
+  "description": "HERB知识库API Key管理与记忆同步链",
+  "created": "2026-08-24",
+  "version": "1.0",
+  "components": {
+    "M": "记忆查询 - 使用HERB_MEMORY_KEY访问长期记忆",
+    "H": "配置管理 - API Key权限分离与验证"
+  },
+  "usage": {
+    "command": "/HM",
+    "context": "HERB知识库管理",
+    "dependencies": ["HERB_MEMORY_KEY", "HERB_PROMPT_KEY"]
+  }
+}

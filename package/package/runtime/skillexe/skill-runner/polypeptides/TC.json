@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "技能执行C",
+  "name_en": "Skill RunnerC",
+  "nickname": "srunner",
+  "abbreviation": "SKRC",
+  "gene_chain": "TC",
+  "atoms": [
+    20
+  ],
+  "description": "技能执行 + C",
+  "codon_level": 2,
+  "file": "TC.json"
+}

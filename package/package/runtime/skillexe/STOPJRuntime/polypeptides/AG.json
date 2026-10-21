@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "name_cn": "闸门运行时G",
+  "name_en": "STOPJ RuntimeG",
+  "nickname": "stopj",
+  "abbreviation": "STRG",
+  "gene_chain": "AG",
+  "atoms": [
+    13
+  ],
+  "description": "闸门运行时 + G",
+  "codon_level": 2,
+  "file": "AG.json"
+}

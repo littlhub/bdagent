@@ -1,0 +1,13 @@
+{
+  "codon": "T",
+  "skill": "runtime-terminate",
+  "name_cn": "闸门停止",
+  "category": "运行时类",
+  "token": 200,
+  "index": 102,
+  "description": "闸门停止检查，执行状态验证或返工",
+  "params": {
+    "check_point": true,
+    "rework": true
+  }
+}

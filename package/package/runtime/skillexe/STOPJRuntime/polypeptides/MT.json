@@ -1,0 +1,21 @@
+{
+  "name": "MT",
+  "index": 109,
+  "description": "记忆合并多肽 - 2026-08-23与2026-08-24合并",
+  "type": "polypeptide",
+  "atoms": [101, 102, 103, 104, 105],
+  "token_cost": 2500,
+  "merge_info": {
+    "source_dates": ["2026-08-23", "2026-08-24"],
+    "total_skills": 4,
+    "total_docs": 30,
+    "total_tokens": 6880
+  },
+  "skills_recorded": ["C2", "C3", "C4", "text-encrypt"],
+  "projects": ["时光的回响小说生视频管道"],
+  "api_config": {
+    "memory_key": "HERB_MEMORY_KEY",
+    "prompt_key": "HERB_PROMPT_KEY",
+    "deleted_keys": ["mv_9bebd...", "mv_e9d6e531..."]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "skill-tracker",
+  "version": "2.0",
+  "description": "技能调用追踪 - 记录每次技能执行的时间、耗时、token 与结果，提供历史与统计",
+  "author": "DBAgent",
+  "main": "scripts/tracker.py",
+  "runtime": "python",
+  "commands": [
+    {"name": "/ST", "description": "查看技能统计"}
+  ]
+}
