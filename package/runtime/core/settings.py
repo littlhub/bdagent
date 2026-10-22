@@ -20,6 +20,12 @@ DEFAULT_SETTINGS: dict[str, Any] = {
     "agent_writable": True,
     "agent_root": "",
     "agent_max_rounds": 24,
+    # classic = 原有 agent_loop（限轮数）；codecore = AiCode 内核（长程、按难度自动选模式）
+    "agent_engine": "codecore",
+    # 自动审批：PLAN 出方案后直接执行，不再询问
+    "agent_auto_approve": False,
+    # 思考等级 1-5：越高越先规划多步再动手
+    "agent_think_level": 3,
 }
 
 
@@ -38,6 +44,9 @@ class Settings:
     agent_writable: bool = True
     agent_root: str = ""
     agent_max_rounds: int = 24
+    agent_engine: str = "codecore"
+    agent_auto_approve: bool = False
+    agent_think_level: int = 3
     extra: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

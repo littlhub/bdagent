@@ -16,12 +16,42 @@
 import json
 import os
 import re
+import socket
 import sys
 import threading
 import time
 import urllib.error
 import urllib.request
 import webbrowser
+
+
+def enable_ipv4_first():
+    """让 socket 优先只用 IPv4。
+
+    PC 上 IPv6 路由常不通，系统却按 getaddrinfo 顺序先试 IPv6：
+    实测 apihub.agnes-ai.com 的 IPv4 直连 0.26s，IPv6 要等 20s 才超时，
+    默认连接因此拖到 42s，模型调用看起来就像卡死。
+    没有 IPv4 地址时才回退 IPv6，保留纯 IPv6 环境的可用性。
+    设 DBAGENT_IPV4_FIRST=0 可关闭。
+    """
+    if os.environ.get("DBAGENT_IPV4_FIRST", "1") == "0":
+        return False
+    if getattr(socket.getaddrinfo, "_dbagent_ipv4", False):
+        return True
+
+    real = socket.getaddrinfo
+
+    def ipv4_first(host, port, family=0, type=0, proto=0, flags=0):
+        infos = real(host, port, family, type, proto, flags)
+        v4 = [i for i in infos if i[0] == socket.AF_INET]
+        return v4 or infos
+
+    ipv4_first._dbagent_ipv4 = True
+    socket.getaddrinfo = ipv4_first
+    return True
+
+
+enable_ipv4_first()
 
 # ==================== 配置区域（请根据实际情况修改） ====================
 # API 配置（建议通过环境变量 AGENT_API_KEY 设置，或通过 --key 临时指定）
@@ -127,6 +157,14 @@ def load_config():
                 cfg = json.load(f)
         except Exception:
             cfg = {}
+    # 多厂商：以当前 profile 为准
+    profiles = cfg.get("profiles") if isinstance(cfg, dict) else None
+    if isinstance(profiles, list) and profiles:
+        active = cfg.get("active_profile")
+        cur = next((p for p in profiles if p.get("name") == active), profiles[0])
+        key = os.environ.get("AGENT_API_KEY") or cur.get("api_key") or None
+        return (key, cur.get("base_url") or DEFAULT_BASE_URL,
+                cur.get("model") or DEFAULT_MODEL)
     file_key, file_base, file_model = read_key_file()
     try:
         from runtime.core.settings import load_settings
@@ -154,6 +192,102 @@ def mask_key(key):
     if not key:
         return "(未设置)"
     return key[:6] + "***" + key[-4:] if len(key) > 12 else "***"
+
+
+# ---------- 多厂商 / 多模型 ----------
+def _read_cfg_file():
+    if not os.path.exists(CONFIG_PATH):
+        return {}
+    try:
+        with open(CONFIG_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def _write_cfg_file(cfg):
+    os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)
+    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, ensure_ascii=False, indent=2)
+    try:
+        os.chmod(CONFIG_PATH, 0o600)
+    except Exception:
+        pass
+
+
+def load_profiles():
+    """返回 (profiles, active_name)。旧配置自动升级成一条 profile。"""
+    cfg = _read_cfg_file()
+    profiles = cfg.get("profiles")
+    if not isinstance(profiles, list) or not profiles:
+        key, base, model = load_config()
+        if not key:
+            return [], ""
+        profiles = [{
+            "name": "default",
+            "base_url": base,
+            "api_key": key,
+            "model": model,
+            "models": [model],
+        }]
+        cfg["profiles"] = profiles
+        cfg["active_profile"] = "default"
+        _write_cfg_file(cfg)
+    active = cfg.get("active_profile") or profiles[0].get("name") or "default"
+    return profiles, active
+
+
+def activate_profile(name, model=None):
+    """切到指定厂商（可同时指定模型），返回 (key, base, model)。"""
+    profiles, active = load_profiles()
+    target = next((p for p in profiles if p.get("name") == name), None)
+    if target is None:
+        raise ValueError(f"没有这个厂商：{name}")
+    if model:
+        target["model"] = model
+        models = target.setdefault("models", [])
+        if model not in models:
+            models.append(model)
+    cfg = _read_cfg_file()
+    cfg["profiles"] = profiles
+    cfg["active_profile"] = name
+    # 同步顶层字段，保持老代码路径（load_config）一致
+    cfg["api_key"] = target.get("api_key")
+    cfg["base_url"] = target.get("base_url")
+    cfg["model"] = target.get("model")
+    _write_cfg_file(cfg)
+    return (target.get("api_key"), target.get("base_url"), target.get("model"))
+
+
+def add_profile(name, base_url, api_key, models):
+    profiles, _ = load_profiles()
+    if any(p.get("name") == name for p in profiles):
+        raise ValueError(f"厂商已存在：{name}")
+    models = [m.strip() for m in (models or []) if m.strip()]
+    profiles.append({"name": name, "base_url": base_url,
+                     "api_key": api_key, "model": models[0] if models else "",
+                     "models": models})
+    cfg = _read_cfg_file()
+    cfg["profiles"] = profiles
+    _write_cfg_file(cfg)
+    return profiles
+
+
+def remove_profile(name):
+    profiles, active = load_profiles()
+    if len(profiles) <= 1:
+        raise ValueError("至少保留一个厂商")
+    profiles = [p for p in profiles if p.get("name") != name]
+    cfg = _read_cfg_file()
+    cfg["profiles"] = profiles
+    if active == name:
+        cfg["active_profile"] = profiles[0]["name"]
+        cfg["api_key"] = profiles[0].get("api_key")
+        cfg["base_url"] = profiles[0].get("base_url")
+        cfg["model"] = profiles[0].get("model")
+    _write_cfg_file(cfg)
+    return profiles
 
 # ---------- 图形界面配置（无 tkinter 回退命令行） ----------
 def setup_gui():
@@ -304,12 +438,20 @@ def retry_delay(retry_after, attempt):
             pass
     return min(LLM_RETRY_BASE_DELAY * (2 ** attempt), 30.0)
 
-def call_llm(messages, key, base_url, model, temperature=0.2, max_retries=LLM_RETRIES):
+def call_llm(messages, key, base_url, model, temperature=0.2, max_retries=LLM_RETRIES,
+             max_tokens=None, timeout=None):
     """调用 OpenAI 兼容 /chat/completions 接口，对限流、5xx、网络错误与空响应做退避重试。
 
     Key 来自 Key 池：失败（429/5xx/401 等）时冷却当前 Key 并换下一个，
     并行分支/重试自然分摊限流。
+
+    max_tokens：限制输出长度。生成耗时与输出 token 数近似线性，
+    摘要类调用不设上限时模型可能写上千字，单次要一两分钟。
+
+    timeout：单次请求超时；不传时用全局 LLM_TIMEOUT（180s）。
+    交互式场景可调小，避免长时间无反馈看起来像卡死。
     """
+    timeout = timeout or LLM_TIMEOUT
     url = base_url.rstrip("/") + "/chat/completions"
     payload = {
         "model": model,
@@ -317,6 +459,8 @@ def call_llm(messages, key, base_url, model, temperature=0.2, max_retries=LLM_RE
         "temperature": temperature,
         "stream": False,
     }
+    if max_tokens:
+        payload["max_tokens"] = int(max_tokens)
     body_bytes = json.dumps(payload).encode("utf-8")
 
     import keypool
@@ -338,7 +482,7 @@ def call_llm(messages, key, base_url, model, temperature=0.2, max_retries=LLM_RE
         }
         try:
             req = urllib.request.Request(url, data=body_bytes, headers=headers)
-            with urllib.request.urlopen(req, timeout=LLM_TIMEOUT) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
             choices = data.get("choices") or []
             content = ((choices[0].get("message") or {}).get("content") or "") if choices else ""
@@ -451,6 +595,47 @@ def scan_py_files(root_dir):
     return sorted(_walk_py(root_dir))
 
 
+def _scan_structure(root_dir):
+    """阶段一：只扫结构（目录树 + 文件大小/行数），不读内容。
+
+    大项目上全量读文件太慢，先用文件系统信息给候选排序：
+    路径命中、文件较大（通常是核心模块）优先。
+    """
+    entries = []
+    for full, rel in _walk_py(root_dir):
+        try:
+            size = os.path.getsize(full)
+        except OSError:
+            size = 0
+        entries.append({"rel": rel, "full": full, "size": size})
+    return entries
+
+
+def _grep_candidates(root_dir, entries, tokens, max_hits=40):
+    """阶段二：用正则扫文件内容，只对命中文件计分。
+
+    不用外部 grep：Termux 是 BusyBox，不支持 --include/--exclude-dir，
+    而且进程开销在手机上不划算。纯 Python 逐文件扫更快也更可移植。
+    """
+    if not tokens:
+        return {}
+    pattern = re.compile("|".join(re.escape(t) for t in tokens[:60] if t),
+                         re.IGNORECASE)
+    hits = {}
+    for e in entries:
+        try:
+            with open(e["full"], encoding="utf-8", errors="ignore") as f:
+                content = f.read(200_000)
+        except OSError:
+            continue
+        n = len(pattern.findall(content))
+        if n:
+            hits[e["rel"]] = n
+        if len(hits) >= max_hits:
+            break
+    return hits
+
+
 def scan_py_paths(root_dir):
     """只列路径，不读不解析——用于快速范围定位。"""
     return sorted(rel for _full, rel in _walk_py(root_dir))
@@ -475,11 +660,6 @@ def collect_tree(py_files, content_cache=None):
 # 定位阶段只读文件、不做 AST 解析，几毫秒内给出候选文件，
 # 避免每轮全量解析上百个文件后才让模型猜"改哪里"。
 
-_EDIT_HINT_WORDS = {
-    "修改", "改成", "改为", "调整", "重构", "优化", "修复", "实现",
-    "新增", "添加", "删除", "移除", "重命名", "替换", "更新", "补充",
-    "加速", "提速", "简化", "拆分", "合并", "注释", "文档",
-}
 
 
 def _split_identifiers(text):
@@ -490,7 +670,7 @@ def _split_identifiers(text):
     # 中文整体与 2-4 字片段（「沙箱守卫」能命中 guard 相关的中文注释）
     for seg in re.findall(r"[\u4e00-\u9fff]{2,}", text or ""):
         tokens.append(seg)
-        if len(seg) > 4:
+        if len(seg) > 2:
             for n in (2, 3, 4):
                 for i in range(0, len(seg) - n + 1):
                     tokens.append(seg[i:i + n])
@@ -536,68 +716,67 @@ def _expand_tokens(tokens):
 
 
 def locate_scope(req, root, py_paths, cache=None):
-    """确定修改范围：返回按相关度排序的候选文件列表。
+    """确定修改范围：三阶段定位，避免全量读文件。
 
-    打分依据（只读文件内容，不做 AST 解析）：
-        +10 文件名命中标识符（最强信号）
-        +6  文件内定义的函数名命中标识符
-        +2  文件内容命中标识符
-        +4  文件名命中中文词
-        +1  内容命中中文词
-    无任何命中时按编辑意图给主入口兜底。
+    阶段一 扫结构：只拿路径/大小，按文件名命中给基础分；
+    阶段二 grep：只对内容扫描一次，命中数作为内容分；
+    阶段三 读取：只读入选文件，供后续 AST 解析复用（cache）。
 
-    cache 传入 dict 时会把读过的内容缓存下来，供后续解析复用，
-    避免同一轮里把文件读两遍。
+    大项目上比「逐文件 read(200KB)」快一个量级。
     """
     base_tokens = _split_identifiers(req)
     tokens = _expand_tokens(base_tokens)
-    has_edit_intent = any(w in (req or "") for w in _EDIT_HINT_WORDS)
+    has_edit_intent = any(w in (req or "") for w in _wordset("edit_hint_words"))
 
-    scored = []
-    for rel in py_paths:
-        rel_low = rel.lower()
-        try:
-            with open(os.path.join(root, rel), encoding="utf-8",
-                      errors="ignore") as f:
-                content = f.read(200_000)
-        except OSError:
-            content = ""
-        if cache is not None:
-            cache[rel] = content
-        content_low = content.lower()
-        # 只抽取函数定义名，成本远低于完整 AST 解析
-        func_names = re.findall(r"(?m)^\s*def\s+([A-Za-z_]\w*)", content)
-        funcs_low = " ".join(func_names).lower()
-
+    # ---- 阶段一：结构 + 文件名打分（不读内容）----
+    entries = _scan_structure(root)
+    scores = {}
+    for e in entries:
+        rel_low = e["rel"].lower()
         score = 0
         for t in tokens:
             tl = t.lower()
-            if not tl:
-                continue
-            if tl in rel_low:
+            if tl and tl in rel_low:
                 score += 10
-            elif tl in funcs_low:
-                score += 6
-            elif tl in content_low:
-                score += 2
+        # 核心入口文件给一点基础权重
+        if os.path.basename(rel_low) in ("main.py", "agent.py"):
+            score += 3
         if score:
-            scored.append((score, rel))
+            scores[e["rel"]] = score
 
-    scored.sort(key=lambda x: (-x[0], x[1]))
+    # ---- 阶段二：grep 内容，命中数加权 ----
+    hits = _grep_candidates(root, entries, tokens)
+    for rel, n in hits.items():
+        scores[rel] = scores.get(rel, 0) + min(n, 20) * 2
 
-    if scored:
-        # 只保留有实质相关度的（避免长尾噪声）
-        top = scored[0][0]
+    if scores:
+        ranked = sorted(scores.items(), key=lambda kv: (-kv[1], kv[0]))
+        top = ranked[0][1]
         cutoff = max(top * 0.25, 6)
-        picked = [rel for s, rel in scored if s >= cutoff][:12]
-        return picked, "keyword"
+        picked = [rel for rel, s in ranked if s >= cutoff][:12]
+        how = "structure+grep"
+    else:
+        # 兜底：编辑类需求优先主入口
+        core = [e["rel"] for e in entries
+                if os.path.basename(e["rel"]).lower()
+                in ("main.py", "agent.py", "agesp.py")]
+        if has_edit_intent and core:
+            picked, how = core, "fallback-core"
+        else:
+            picked, how = [e["rel"] for e in entries][:60], "fallback-all"
 
-    # 兜底：编辑类需求优先主入口
-    core = [p for p in py_paths
-            if os.path.basename(p).lower() in ("main.py", "agent.py", "agesp.py")]
-    if has_edit_intent and core:
-        return core, "fallback-core"
-    return py_paths[:60], "fallback-all"
+    # ---- 阶段三：只读入选文件，供 AST 复用 ----
+    if cache is not None:
+        for rel in picked:
+            if rel in cache:
+                continue
+            try:
+                with open(os.path.join(root, rel), encoding="utf-8",
+                          errors="ignore") as f:
+                    cache[rel] = f.read(200_000)
+            except OSError:
+                cache[rel] = ""
+    return picked, how
 
 def structure_summary(tree):
     lines = []
@@ -1226,8 +1405,13 @@ def plan_from_protein(req):
     if not best:
         return None
     _, entry, kw = best
+    chain = entry["skill_chain"]
+    # 链里任何一个技能不可执行，整条链就不能用（否则中途必失败）
+    bad = [s for s in chain if not _skill_runnable(s)]
+    if bad:
+        return None
     return {
-        "skill_chain": entry["skill_chain"],
+        "skill_chain": chain,
         "gene_chain": entry["gene_chain"],
         "name": entry["name"],
         "match": f"蛋白库:{entry['gene_chain']}({kw})",
@@ -1291,7 +1475,13 @@ def _looks_like_person_name(req):
     topics = _atom_field("person-image-search", "not_person_name", []) or []
     if any(w in s for w in topics):
         return False
+    # 含动作/功能词的不是人名：「定时任务」「分析日志」都符合 2-5 汉字，
+    # 但它们明显是任务描述，不能当人名去下图
+    if any(w in s for w in _wordlist("not_name_words")):
+        return False
     return True
+
+
 
 
 def plan_from_atom(req):
@@ -1367,7 +1557,7 @@ def plan_from_atom(req):
                 continue
             # 泛词直接排除：否则「技能」「文档」这类词会盖住真正对口的命中
             # （「安装一个技能」曾因最长命中是「技能」而完全无法匹配）
-            if c in GENERIC_WORDS or is_function_word(c):
+            if c in _wordset("generic_words") or is_function_word(c):
                 continue
             if c.lower() in low:
                 if hit is None or len(c) > len(hit):
@@ -1420,58 +1610,47 @@ def plan_from_atom(req):
                             "match": f"原子:person-image-search(人名:{req.strip()})"}
         return None
     _, skill, hit = best
+    # 选中的技能必须有可执行入口，否则规划到它必定失败
+    # （pdr-timer 只有 SKILL.md，被「分析」命中后报「没有可执行脚本」）
+    if not _skill_runnable(skill):
+        return None
     return {"skill_chain": [skill], "match": f"原子:{skill}({hit})"}
+
+
+def _skill_runnable(skill):
+    """技能是否有可执行脚本。
+
+    兼容两种目录名：多数技能用 scripts/，pdr-timer 用 script/。
+    """
+    data_dir, skills_dir = _workspace_dirs()
+    sdir = os.path.join(skills_dir, skill)
+    if not os.path.isdir(sdir):
+        return False
+    for name in ("scripts", "script"):
+        if os.path.isdir(os.path.join(sdir, name)):
+            return True
+    meta = os.path.join(sdir, "skill.json")
+    if os.path.isfile(meta):
+        try:
+            with open(meta, encoding="utf-8") as f:
+                info = json.load(f)
+            if info.get("main") or info.get("entry") or info.get("scripts"):
+                return True
+        except (OSError, ValueError):
+            pass
+    return False
 
 
 # 需求里指向「技能本身」的操作：动词与「技能」相邻才算，避免裸动词误伤
 _SKILL_OP_RE = re.compile(r"(创建|新建|安装|更新|升级|添加|写|做|生成)\S{0,4}技能")
 
-# 过于通用的词，单独出现时不足以判定技能
-GENERIC_WORDS = {
-    "文档", "文件", "处理", "生成", "管理", "工具", "系统", "插件",
-    "服务", "操作", "内容", "格式", "转换", "技能",
-    # 裸动作动词：说明里出现「安装」「删除」不代表这条需求就是要用该技能。
-    # 「安装依赖」曾因 SECURE_INSTALL 描述里的「安装」被当成安装技能。
-    "安装", "创建", "新建", "更新", "删除", "移除",
-    "添加", "修改", "调整", "重构",
-    "目录",
-    # 泛指名词：技能描述里几乎都会出现，但与需求具体对象无关。
-    # 「开发一个飞机模型可拆解发动机」曾同时命中 visioncustom 与 agnes-image
-    # 描述里的「模型」，被误判成图像识别。
-    "模型", "数据", "信息", "版本", "代码", "项目", "任务", "流程",
-    "接口", "消息", "结果", "输出", "输入", "文本", "图片", "图像",
-    "本地", "在线", "默认", "标准", "通用", "自定义", "完整", "简单",
-    # 裸动词/泛指：描述里随处可见，单靠它无法判断用户意图
-    # 「搜索图片」曾因 memory-image-generation 描述里的「搜索」被误配
-    "搜索", "查找", "获取", "读取", "显示", "展示",
-}
 
-# 高频功能词：出现在几乎任何需求里，与具体技能无关。
-# 描述切片最容易把它们带进来（如「帮我写一个赛车游戏」命中 memory-image-generation
-# 描述里的子串「一个」），命中这类词一律不得触发技能。
-FUNCTION_WORDS = {
-    "一个", "做的", "做个", "一下", "帮我", "我要", "我想", "需要", "使用",
-    "进行", "相关", "支持", "自动", "设为", "设置", "配置", "功能", "方式",
-    "请求", "要求", "时候", "过程", "程序", "结果", "问题", "错误", "情况",
-    "多个", "各种", "各类", "以及", "或者", "并且", "但是", "因为",
-    "所以", "如果", "那么", "可以", "应该", "必须", "已经", "还在", "正在",
-    "用户", "当用", "时会", "用于", "选择", "要求", "当用户", "时会使用",
-}
 
-# 英文描述里的高频虚词：短、无实义，中文需求里更不可能命中
-EN_FUNCTION_WORDS = {
-    "or", "and", "the", "for", "with", "from", "that", "this", "when",
-    "use", "used", "user", "any", "all", "into", "out", "not", "can",
-    "may", "its", "it", "as", "at", "by", "in", "on", "of", "to", "a",
-    "an", "is", "be", "are", "was", "were", "will", "would", "should",
-    "how", "what", "which", "who", "whom", "do", "does", "did", "ed", "er",
-    "ly", "ing", "es", "al", "ty", "ry", "ny", "ny",
-}
 
 
 def is_function_word(word):
     low = (word or "").lower()
-    return low in FUNCTION_WORDS or low in EN_FUNCTION_WORDS or len(low) <= 1
+    return low in _wordset("function_words") or low in _wordset("en_function_words") or len(low) <= 1
 
 
 # ==================== 多步技能链（多肽）====================
@@ -1486,9 +1665,6 @@ DOC_CHAIN_KEYWORDS = {
     "md": ("markdown", "md文件", "写成md"),
 }
 
-# 需要"先把内容整理出来"的信号词
-_SUMMARIZE_WORDS = ("总结", "整理", "归纳", "汇总", "提炼", "概括", "写一份", "做一个",
-                    "做成", "转成", "生成一份", "变成", "上面", "刚才", "这个内容")
 
 
 def detect_doc_chain(req):
@@ -1499,7 +1675,7 @@ def detect_doc_chain(req):
             continue
         # 明确要"总结/整理/做成"时才走多步链；
         # 单纯"做个ppt"仍走原子匹配（空模板由模型自行规划）
-        if not any(w in req for w in _SUMMARIZE_WORDS):
+        if not any(w in req for w in _wordlist("summarize_words")):
             continue
         return fmt
     return None
@@ -1948,6 +2124,76 @@ def _check_ppt_layout(data):
     return f"发现 {len(issues)} 项偏差：{head}{more}"
 
 
+
+
+
+# 名词出现位置：动词后 12 字内
+# 正则不预编译：词表来自 data/words.json，改配置后应即时生效
+
+
+def _dev_object_re():
+    words = _wordlist("dev_code_objects")
+    if not words:
+        return None
+    try:
+        return re.compile("(" + "|".join(re.escape(w) for w in words) + ")", re.I)
+    except re.error:
+        return None
+
+
+def _looks_like_dev_request(req):
+    """需求是否指向改代码。
+
+    判定取决于「动词 + 宾语」组合，不是光看动词：
+      · 强动词（修改/实现/重构…）后跟代码对象 → 是
+      · 弱动词（分析/排查…）必须跟代码对象才算，否则交给技能或问答
+        （「分析日志」「分析数据」不是改代码）
+    """
+    text = (req or "").strip()
+    if not text:
+        return False
+    low = text.lower()
+    if any(w in low for w in _wordlist("dev_exclude")):
+        return False
+
+    obj_re = _dev_object_re()
+    if obj_re is None:
+        return False
+    has_code_obj = bool(obj_re.search(text))
+    if not has_code_obj:
+        return False
+
+    # 强动词 + 代码对象：确认
+    for v in _wordlist("dev_strong_verbs"):
+        idx = text.find(v)
+        if idx < 0:
+            continue
+        window = text[idx:idx + len(v) + 12]
+        if obj_re.search(window):
+            return True
+
+    # 弱动词 + 代码对象：只有宾语是代码类才算
+    for v in _wordlist("dev_weak_verbs"):
+        idx = text.find(v)
+        if idx < 0:
+            continue
+        window = text[idx:idx + len(v) + 12]
+        m = obj_re.search(window)
+        if m:
+            return True
+    return False
+
+
+def _is_plan_confirm(req):
+    """「按方案执行」这类确认词：要接 codecore 暂存的方案，不能被本地规划抢走。"""
+    try:
+        import codecore_bridge
+        return (codecore_bridge.has_pending_plan()
+                and codecore_bridge.looks_like_confirm(req))
+    except Exception:
+        return False
+
+
 def plan_locally(req, fuzzy=True):
     """本地规划阶段：先用蛋白库复用，再退回 skill-planner 规则库。
 
@@ -1971,6 +2217,18 @@ def plan_locally(req, fuzzy=True):
                 "match": hit["match"], "level": "protein"}
 
     # 二级：文档生成类需求走多步链，不要当成单个原子
+    low_req = (req or "").lower()
+    # GitHub 热榜必须同时出现 github 与热榜/热门，否则「近期热门电影」
+    # 会被「热门」这个泛词抢给 GitHub 技能
+    if "github" in low_req and re.search(r"热榜|热门|trending", low_req):
+        return {"skill_chain": ["github-trending"], "tokens": 0,
+                "match": "规则:github+热榜", "level": "rule"}
+    # 其它榜单类需求走搜索：模型容易把它们误配成「按人名下图」或其它单步技能
+    # （「电影美女明星演的热榜」曾被执行成下载 3 次人脸图）
+    if re.search(r"热榜|榜单|排行榜|排行|热门|趋势榜", low_req):
+        return {"skill_chain": ["search"], "tokens": 0,
+                "match": "规则:榜单→搜索", "level": "rule"}
+
     fmt = detect_doc_chain(req)
     if fmt:
         return {"skill_chain": [], "tokens": 0,
@@ -2136,8 +2394,7 @@ def refresh_skill_index():
 def _next_free_codon(db):
     """取一个未被占用的 3 碱基密码子。
 
-    按字母序找第一个空闲组合（AAA…TTT 之外还有 X 前缀兜底），
-    避免和已登记的蛋白撞名。
+    按字母序找第一个空闲组合，避免和已登记的蛋白撞名。
     """
     used = set()
     for p in db.get("proteins", []):
@@ -2153,7 +2410,6 @@ def _next_free_codon(db):
                 cand = a + b + c
                 if cand not in used:
                     return cand
-    # 3 碱基用尽才退到 X 前缀（256 条理论上够用）
     n = 1
     while f"X{n}" in used:
         n += 1
@@ -2181,9 +2437,9 @@ def register_protein(skill_chain, name, gene_chain="", keywords=None,
         return False, "技能链为空"
 
     # 校验技能真实存在，避免把错名字的链写进库
-    _data_dir, skills_dir = _workspace_dirs()
+    data_dir, skills_dir = _workspace_dirs()
     try:
-        lib = _make_library(_data_dir, skills_dir)
+        lib = _make_library(data_dir, skills_dir)
         known = set(lib.skill_names()) | set(TOOL_HINTS)
     except Exception:
         known = None
@@ -2192,7 +2448,6 @@ def register_protein(skill_chain, name, gene_chain="", keywords=None,
         if missing:
             return False, "技能不存在：" + ", ".join(missing)
 
-    data_dir, _ = _workspace_dirs()
     idx_path = os.path.join(data_dir, "proteins", "index.json")
     try:
         if os.path.isfile(idx_path):
@@ -2234,7 +2489,7 @@ def register_protein(skill_chain, name, gene_chain="", keywords=None,
         "rules": list(rules or []),
         "priority": 50,
         "description": "自动登记：" + " → ".join(norm),
-        # 数据流按「顺序传递、末步吃上一步文字」的通用默认；
+        # 数据流按「顺序传递、后续吃上一步文字」的通用默认；
         # 需要文件流转的链由用户改 consumes
         "polypeptide_tree": {
             "start_codon": "AUG",
@@ -2379,7 +2634,6 @@ def _maybe_remember_chain(planned, ok, requirement):
         # 单技能没必要建蛋白（原子层已经能命中），至少两步才值得固化
         if len(chain) < 2:
             return
-        # 链里若有工具名（search/fetch），说明是临时组合，也跳过
         keywords = [(requirement or "").strip()][:1]
         name = (requirement or "自动链").strip()[:16]
         good, msg = register_protein(chain, name, keywords=keywords)
@@ -2533,27 +2787,19 @@ def route_intent(req, library, key, base, model, forced=None):
     return "code"
 
 
-# 目标驱动特征：要的是「达到某个状态」，验收标准可以客观检查
-_GOAL_HINTS = ("修复", "修好", "搞定", "解决", "通过测试", "测试通过",
-               "全部通过", "跑通", "能跑", "跑不起来", "正常运行", "报错",
-               "不再报错", "搞定它", "排查")
 
-# 方案先行特征：涉及面广、需要先看清再动手，或用户明说要计划
-_PLAN_HINTS = ("重构", "重新设计", "架构", "大规模", "批量", "全面",
-               "系统性地", "整体", "拆分", "迁移", "升级", "先给我方案",
-               "先规划", "计划一下", "怎么改比较好")
 
 
 def _looks_like_goal_task(req: str) -> bool:
     """目标是「修好/跑通/通过」这类可验收状态，适合循环试错。"""
     low = (req or "").lower()
-    return any(w in low for w in _GOAL_HINTS)
+    return any(w in low for w in _wordlist("goal_hints"))
 
 
 def _looks_like_plan_task(req: str) -> bool:
     """涉及面广或用户明说要方案，适合先规划后执行。"""
     low = (req or "").lower()
-    return any(w in low for w in _PLAN_HINTS)
+    return any(w in low for w in _wordlist("plan_hints"))
 
 
 def run_code_agent(req, key, base, model, yes, mode=None,
@@ -2580,6 +2826,22 @@ def run_code_agent(req, key, base, model, yes, mode=None,
         cfg = load_settings(HERE).to_dict()
     except Exception:
         cfg = {}
+
+    # codecore 引擎：长程任务、按难度自动选 PLAN/BUILD，不设轮数上限
+    if str(cfg.get("agent_engine") or "classic") == "codecore":
+        try:
+            import codecore_bridge
+            return codecore_bridge.run_long_task(
+                req, workdir, key, base, model,
+                mode=mode or "auto",
+                writable=bool(cfg.get("agent_writable")),
+                auto_approve=bool(cfg.get("agent_auto_approve")),
+                think_level=int(cfg.get("agent_think_level") or 3),
+                on_event=on_event, should_stop=should_stop, yes=yes,
+            )
+        except Exception as e:
+            print(f"⚠️ codecore 引擎不可用（{type(e).__name__}: {e}），回退到 classic。")
+
     return agent_loop.run_agent_loop(
         req, workdir, key, base, model, yes=yes, mode=mode,
         writable=bool(cfg.get("agent_writable")),
@@ -2860,12 +3122,18 @@ def run_task(req, key, base, model):
 
 
 def _workspace_dirs():
-    """定位 workspace 下的 data 与 skills 目录。"""
-    data_dir = os.path.join(HERE, "..", "workspace", "data")
+    """定位 workspace 下的数据目录与 skills 目录。
+
+    动态数据（原子库/蛋白库/词表/运行时配置）统一放在 data/dynamic/，
+    与 work/（运行产出）分开，方便整体备份或替换。
+    兼容旧布局：data/dynamic 不存在时直接用 data。
+    """
+    data_root = os.path.join(HERE, "..", "workspace", "data")
     skills_dir = os.path.join(HERE, "..", "workspace", "skills")
-    if not os.path.isdir(data_dir):
-        data_dir, skills_dir = "data", "skills"
-    return data_dir, skills_dir
+    if not os.path.isdir(data_root):
+        return "data", "skills"
+    dynamic = os.path.join(data_root, "dynamic")
+    return (dynamic if os.path.isdir(dynamic) else data_root), skills_dir
 
 
 # ==================== 运行时配置 ====================
@@ -2904,6 +3172,100 @@ def _runtime():
     merged.update(cfg or {})
     _RUNTIME_CACHE.update({"key": mtime, "cfg": merged})
     return merged
+
+
+# ==================== 词表配置 ====================
+# 所有判定用的词表都放 data/words.json，内核只读不写。
+# 改词表不需要动代码，也不会因列表散落在 main.py 里而漏改。
+_WORDS_CACHE = {"key": None, "cfg": {}}
+
+# words.json 缺失时的最小兜底，保证程序还能跑
+_WORDS_DEFAULT = {
+    "dev_strong_verbs": ["新建", "创建", "开发", "搭建", "实现", "编写",
+                        "重构", "修改", "改进", "优化", "修复", "调整", "写"],
+    "dev_weak_verbs": ["分析", "排查", "定位", "看看", "检查", "审查", "梳理"],
+    "dev_code_objects": ["项目", "代码", "函数", "模块", "脚本", "程序",
+                         "应用", "系统", "游戏", "bug", "报错", "模式", "逻辑"],
+    "dev_exclude": ["文档", "ppt", "word", "excel", "表格", "小说", "图片",
+                    "新闻", "天气", "数据", "日志", "报告"],
+    "goal_hints": ["修复", "修好", "搞定", "解决", "跑通", "报错"],
+    "plan_hints": ["重构", "重新设计", "架构", "大规模", "全面", "迁移"],
+    "not_name_words": ["任务", "定时", "日志", "代码", "项目", "文件",
+                       "数据", "分析", "报告", "配置", "执行"],
+    "edit_hint_words": ["修改", "改成", "调整", "重构", "修复", "实现",
+                        "新增", "添加", "删除", "替换", "更新"],
+    "weather_noise": ["今日", "今天", "明天", "天气", "气温", "温度", "的"],
+    "github_noise": ["github", "热榜", "热门", "项目", "最近", "关于", "的"],
+    "generic_words": ["文档", "文件", "处理", "生成", "管理", "工具",
+                      "系统", "内容", "格式", "转换", "技能"],
+    "function_words": ["一个", "一下", "帮我", "我要", "需要", "进行"],
+    "en_function_words": ["the", "and", "for", "with", "this"],
+    "summarize_words": ["总结", "整理", "归纳", "汇总", "提炼", "概括"],
+    "greetings": ["你好", "您好", "嗨", "hello", "hi"],
+    "thanks": ["谢谢", "感谢", "多谢", "thanks"],
+}
+
+
+def _words():
+    """读取词表，按 mtime 缓存。
+
+    两种布局都支持：
+      · data/words.json           单文件（旧）
+      · data/words/index.json     与蛋白库一致：索引 + 每组一个文件
+    """
+    data_dir, _ = _workspace_dirs()
+    index_path = os.path.join(data_dir, "words", "index.json")
+    single_path = os.path.join(data_dir, "words.json")
+
+    use_index = os.path.isfile(index_path)
+    target = index_path if use_index else single_path
+    try:
+        mtime = os.path.getmtime(target)
+        # 分组文件改了也要重读：把分组目录的 mtime 一起算进来
+        if use_index:
+            gdir = os.path.join(data_dir, "words")
+            mtime = max(mtime, os.path.getmtime(gdir))
+    except OSError:
+        return _WORDS_DEFAULT
+    if _WORDS_CACHE["key"] == mtime:
+        return _WORDS_CACHE["cfg"]
+
+    cfg = {}
+    try:
+        if use_index:
+            with open(index_path, encoding="utf-8") as f:
+                index = json.load(f)
+            for item in index.get("groups") or []:
+                gname = item.get("group")
+                fname = item.get("file")
+                if not gname or not fname:
+                    continue
+                fpath = os.path.join(data_dir, "words", fname)
+                try:
+                    with open(fpath, encoding="utf-8") as f:
+                        payload = json.load(f)
+                    cfg[gname] = payload.get("words") or []
+                except (OSError, ValueError):
+                    continue
+        else:
+            with open(single_path, encoding="utf-8") as f:
+                cfg = json.load(f)
+    except (OSError, ValueError):
+        cfg = {}
+
+    merged = dict(_WORDS_DEFAULT)
+    merged.update(cfg or {})
+    _WORDS_CACHE.update({"key": mtime, "cfg": merged})
+    return merged
+
+
+def _wordset(key):
+    """取一组词表为集合（匹配用，自动转小写不适用中文）。"""
+    return set(_words().get(key) or ())
+
+
+def _wordlist(key):
+    return list(_words().get(key) or ())
 
 
 def _skill_roots(skills_dir=None):
@@ -3157,7 +3519,11 @@ def _plan_workflow(req, library, key, base, model, forced=None):
             "用户要求复用上一次生成的提示词/描述（如「用上一次的提示词生图」）时，\n"
             "该参数写占位符 {last_prompt}，不要自己编造。\n"
             "注意：要执行某个技能时，直接把技能名作为 steps 的 name；\n"
-            "不要把技能脚本包在 bash 里执行，bash 只用于普通 shell 命令。"
+            "不要把技能脚本包在 bash 里执行，bash 只用于普通 shell 命令。\n"
+            "person-image-search 必须给出具体人名（如「赵露思」）；需求里只有\n"
+            "「明星」「美女」「演员」这类泛指、没有具体名字时，改用 search 查\n"
+            "榜单或资讯，不要凭空猜一个人名去下图。\n"
+            "同一个步骤不要重复列多次：需要多次执行请用 repeat 字段。"
         ),
     )
     protein_block = (
@@ -3204,10 +3570,14 @@ def _plan_workflow(req, library, key, base, model, forced=None):
         if name not in known:
             print(f"⚠️ 跳过未知步骤: {name}")
             continue
-        names.append(name)
         argv = step.get("args") or []
-        if isinstance(argv, list) and argv:
-            args[name] = [str(a) for a in argv]
+        argv = [str(a) for a in argv] if isinstance(argv, list) else []
+        # 模型有时把同一步骤重复列三次，表达出来的是一模一样的动作，合并掉
+        if names and names[-1] == name and args.get(name, []) == argv:
+            continue
+        names.append(name)
+        if argv:
+            args[name] = argv
 
     if not names:
         return None
@@ -3367,6 +3737,28 @@ def _parse_count_words(text):
     return n, (text[:m.start()] + " " + text[m.end():])
 
 
+
+
+def _weather_city(req):
+    """从「今日烟台天气」这类需求里取出城市名。"""
+    s = req or ""
+    for w in _wordlist("weather_noise"):
+        s = s.replace(w, " ")
+    return " ".join(s.split())
+
+
+
+
+def _github_topic(req):
+    """从「github关于AI的热榜」这类需求里取出主题词（AI），没有则返回空。"""
+    s = (req or "").lower()
+    for w in sorted(_wordlist("github_noise"), key=len, reverse=True):
+        s = s.replace(w, " ")
+    # 注意事项：AI 这类大写缩写去掉噪声后需要还原
+    words = s.split()
+    return " ".join(words).strip()
+
+
 def _infer_tool_args(req, chain):
     """本地规划只给技能名/工具名，没有参数，这里从需求原文推导。
 
@@ -3426,6 +3818,16 @@ def _infer_tool_args(req, chain):
             if size:
                 args.setdefault("agnes-image", [])
                 args["agnes-image"] += ["--size", size]
+
+        elif name == "github-trending":
+            topic = _github_topic(req)
+            if topic:
+                args["github-trending"] = ["--topic", topic]
+
+        elif name == "weather-query":
+            city = _weather_city(req)
+            if city:
+                args["weather-query"] = [city]
 
         elif name == "web-fetch":
             m = re.search(r"https?://[^\s，。；]+", req)
@@ -3721,6 +4123,10 @@ def _normalize_skill_args(name, argv, req):
     这里按技能约定重排一遍。
     """
     argv = [str(a) for a in (argv or [])]
+    # SKILL.md 里的快捷命令（如 /WF fetch <url>）会被模型照抄，
+    # 剥掉 /WF 前缀和紧随的子命令，只留脚本真正接受的参数
+    if argv and re.match(r"^/[A-Za-z]{1,6}$", argv[0].strip()):
+        argv = argv[1:]
     # 模型偶尔把技能名/工具名本身也当第一个参数（web-fetch → "fetch <url>"），
     # argparse 会把 "fetch" 当成位置参数 URL，报「多了参数」
     if argv:
@@ -3757,17 +4163,35 @@ def _relay_skill_phases(stderr_text):
 
 
 def _relay_phase_line(line):
-    """单行版转发，供技能执行期间的实时回调复用。"""
-    s = line.strip()
-    if not s or "[" not in s:
+    """单行版转发，供技能执行期间的实时回调复用。
+
+    转发三类行：
+      · 阶段标记 [GA]/[GC]/[GG] 等
+      · 缩进的子行：逐源进度 (1/14)、逐条要点 · xxx
+      · 其他缩进的内容行
+
+    否则用户只能看到阶段标题，看不到中间过程。
+    """
+    raw = line.rstrip("\n")
+    s = raw.strip()
+    if not s:
         return
-    if not re.match(r"^\[[A-Z]{2,3}\]", s):
+    is_phase = bool(re.match(r"^\[[A-Z]{2,3}\]", s))
+    is_sub = raw.startswith(" ") and (
+        s.startswith("·") or s.startswith("(") or s.startswith("✓")
+        or s.startswith("✗") or s.startswith("-")
+    )
+    if not (is_phase or is_sub):
         return
-    try:
-        s = s.encode("latin-1", "backslashreplace").decode("unicode_escape")
-    except Exception:
-        pass
-    print(f"       {s}", flush=True)
+    if is_phase:
+        try:
+            s = s.encode("latin-1", "backslashreplace").decode("unicode_escape")
+        except Exception:
+            pass
+        print(f"       {s}", flush=True)
+    else:
+        # 子行保留原缩进层级，只补上左缩进对齐
+        print(f"   {raw}", flush=True)
 
 
 def _strip_sandbox_paths(text):
@@ -4321,7 +4745,16 @@ def _run_planned(expr, planned_args, library, data_dir, requirement="", source="
             attempt = 0
             while not result.get("ok") and attempt < WORKFLOW_STEP_RETRIES:
                 attempt += 1
-                reason = str(result.get("error") or result.get("stderr") or "").strip()
+                reason = str(result.get("error") or "").strip()
+                if not reason:
+                    # stderr 里混着阶段行与逐源要点，不能整段当错误：
+                    # 只取像错误的那一行（含 Error/error/失败/异常/Traceback）
+                    lines = [ln.strip() for ln in
+                             str(result.get("stderr") or "").splitlines() if ln.strip()]
+                    err_lines = [ln for ln in lines
+                                 if re.search(r"Error|error|失败|异常|Traceback|ERROR", ln)]
+                    reason = (err_lines[-1] if err_lines
+                              else (lines[-1] if lines else "未知错误"))
                 first = reason.splitlines()[0] if reason else "未知错误"
                 # Key 已在释放时标记冷却，这里直接申请新的空闲 Key 重试
                 revised = _revise_prompt(argv, reason)
@@ -4440,6 +4873,12 @@ CHAT_HELP = """📖 可用命令（对话中直接输入）：
     /cache-clear 清除缓存（下次询问会重新问模型）
     /writable   查看或切换代码代理写权限（/writable on|off）
     /mode       查看或切换代码路由模式（/mode auto|code|plan|goal）
+    /engine     查看或切换代码代理引擎（/engine classic|codecore）
+    /auto       查看或切换自动审批（/auto on|off）
+    /think      查看或设置思考等级（/think 1-5）
+    /session    会话管理（/session list|new|switch <id>）
+    /model      查看或切换模型（/model <模型名>）
+    /provider   厂商管理（/provider list|add|remove|<名字>）
     /config     打开 API Key 配置窗口
     /imagekey   单独配置生图专用 Key（AGNES_API_KEY，与对话主 Key 分开）
     /protein    管理蛋白库：list 列出 / new 登记 / del 删除
@@ -4455,9 +4894,6 @@ CHAT_HELP = """📖 可用命令（对话中直接输入）：
         code  其余情况，直接进入读写循环
       用 /mode 显式指定后，除文档生成链外不再走技能模糊匹配。"""
 
-GREETINGS = ("你好", "您好", "嗨", "hello", "hi", "hey", "在吗", "早上好", "中午好",
-             "下午好", "晚上好", "早安", "晚安", "哈喽")
-THANKS = ("谢谢", "感谢", "多谢", "thanks", "thank you", "thank u", "辛苦你了", "辛苦了")
 
 # 询问自身能力的问题：本地直接答，不调模型（这类问题占对话相当比例）
 CAPABILITY_PATTERNS = (
@@ -4473,10 +4909,10 @@ def is_smalltalk(req):
     r_clean = r.rstrip("！!。~～？?，, ")
     if len(r_clean) > 12:
         return None
-    for g in GREETINGS:
+    for g in _wordlist("greetings"):
         if r_clean == g or r_clean == g + "啊" or r_clean == g + "呀":
             return "greet"
-    for t in THANKS:
+    for t in _wordlist("thanks"):
         if r_clean == t or r_clean.startswith(t):
             return "thanks"
     return None
@@ -4719,7 +5155,7 @@ def run_chat(key, base, model, yes=False):
         return run_code_agent(
             task.req, key, base, model, yes,
             mode=task.mode,
-            on_event=None,
+            on_event=_print_event,
             should_stop=_runner.stopped,
         )
 
@@ -4736,7 +5172,20 @@ def run_chat(key, base, model, yes=False):
     print("\n🤖 AI 对话开发模式（支持自然语言触发工作流）")
     print("   输入需求，AI 会分析项目、给出计划并修改代码；")
     print("   执行期间可继续输入新需求（自动排队），/stop 打断当前任务。")
-    print("   输入 /help 查看命令，/quit 退出。\n")
+    try:
+        from runtime.core.settings import load_settings
+        _st = load_settings(HERE)
+        _engine = getattr(_st, "agent_engine", "codecore")
+        _auto = "开" if getattr(_st, "agent_auto_approve", False) else "关"
+        _think = getattr(_st, "agent_think_level", 3)
+        _writable = "开" if getattr(_st, "agent_writable", True) else "关"
+    except Exception:
+        _engine, _auto, _think, _writable = "codecore", "关", 3, "开"
+    print(f"   引擎 {_engine}　自动审批 {_auto}　思考等级 {_think}　写权限 {_writable}")
+    print("   常用：/engine 切内核　/auto 免确认　/think 1-5 调思考深度")
+    print("         /model 模型　/provider 厂商　/session 会话")
+    print("         /mode 路由　/writable 写权限")
+    print("   输入 /help 查看全部命令，/quit 退出。\n")
 
     while True:
         try:
@@ -4825,6 +5274,29 @@ def run_chat(key, base, model, yes=False):
                     print(f"🧭 代码路由模式：{names[forced_mode]}")
                 else:
                     print(f"❓ 无法识别 {arg!r}，用法：/mode auto|code|plan|goal")
+            elif cmd == "engine" or cmd.startswith("engine "):
+                arg = cmd.split(None, 1)[1].strip().lower() if " " in cmd else ""
+                from runtime.core.settings import load_settings, save_settings
+                if arg in ("classic", "codecore"):
+                    try:
+                        st = load_settings(HERE)
+                        st.agent_engine = arg
+                        save_settings(st, scope="project", cwd=HERE)
+                        label = {"classic": "原有循环（限轮数）",
+                                 "codecore": "AiCode 内核（长程，按难度自动选 PLAN/执行）"}
+                        print(f"⚙️ 代码代理引擎：{arg}（{label[arg]}）")
+                    except Exception as e:
+                        print(f"⚠️ 保存失败：{e}")
+                elif arg == "":
+                    try:
+                        cur = load_settings(HERE).agent_engine
+                    except Exception:
+                        cur = "classic"
+                    print(f"⚙️ 代码代理引擎当前为：{cur}")
+                    print("   用法：/engine classic 原有循环")
+                    print("         /engine codecore AiCode 内核（长程 + 自动模式）")
+                else:
+                    print(f"❓ 无法识别 {arg!r}，用法：/engine classic|codecore")
             elif cmd == "protein" or cmd.startswith("protein "):
                 arg = cmd.split(None, 1)[1].strip() if " " in cmd else ""
                 if not arg or arg in ("list", "列表"):
@@ -4838,6 +5310,164 @@ def run_chat(key, base, model, yes=False):
                     print("  /protein list                     列出所有蛋白")
                     print("  /protein new 名称 --skills a,b,c   登记新链")
                     print("  /protein del 基因码                删除")
+            elif cmd == "auto" or cmd.startswith("auto "):
+                arg = cmd.split(None, 1)[1].strip().lower() if " " in cmd else ""
+                from runtime.core.settings import load_settings, save_settings
+                if arg in ("on", "off"):
+                    try:
+                        st = load_settings(HERE)
+                        st.agent_auto_approve = (arg == "on")
+                        save_settings(st, scope="project", cwd=HERE)
+                        state = ("已开启（PLAN 出方案后直接执行）" if arg == "on"
+                                 else "已关闭（出方案后等你确认）")
+                        print(f"⚙️ 自动审批：{state}")
+                    except Exception as e:
+                        print(f"⚠️ 保存失败：{e}")
+                elif arg == "":
+                    try:
+                        cur = load_settings(HERE).agent_auto_approve
+                    except Exception:
+                        cur = False
+                    print(f"⚙️ 自动审批当前为：{'已开启' if cur else '已关闭'}")
+                    print("   用法：/auto on 方案直接执行；/auto off 方案等你确认")
+                else:
+                    print(f"❓ 无法识别 {arg!r}，用法：/auto on|off")
+            elif cmd == "think" or cmd.startswith("think "):
+                arg = cmd.split(None, 1)[1].strip() if " " in cmd else ""
+                from runtime.core.settings import load_settings, save_settings
+                if arg in ("1", "2", "3", "4", "5"):
+                    try:
+                        st = load_settings(HERE)
+                        st.agent_think_level = int(arg)
+                        save_settings(st, scope="project", cwd=HERE)
+                        labels = {1: "极简，直接动手", 2: "轻量，必要时再读",
+                                  3: "默认", 4: "先想 3-5 步再动手",
+                                  5: "先规划 5-8 步再执行"}
+                        print(f"🧠 思考等级：{arg}（{labels[int(arg)]}）")
+                    except Exception as e:
+                        print(f"⚠️ 保存失败：{e}")
+                elif arg == "":
+                    try:
+                        cur = load_settings(HERE).agent_think_level
+                    except Exception:
+                        cur = 3
+                    print(f"🧠 思考等级当前为：{cur}（1-5，越高越先规划多步）")
+                    print("   用法：/think 1|2|3|4|5")
+                else:
+                    print(f"❓ 无法识别 {arg!r}，用法：/think 1|2|3|4|5")
+            elif cmd == "session" or cmd.startswith("session "):
+                arg = cmd.split(None, 1)[1].strip() if " " in cmd else ""
+                sub, _, target = arg.partition(" ")
+                sub = sub or "list"
+                target = target.strip()
+                from runtime.core.session import SessionStore
+                _sdir = os.path.join(os.path.expanduser("~"), ".dbagent", "sessions")
+
+                if sub in ("list", "ls"):
+                    try:
+                        files = [f for f in os.listdir(_sdir) if f.endswith(".jsonl")]
+                    except OSError:
+                        files = []
+                    if not files:
+                        print("📂 还没有会话记录。")
+                    else:
+                        files.sort(key=lambda f: os.path.getmtime(os.path.join(_sdir, f)),
+                                   reverse=True)
+                        print(f"📂 会话（当前 {session.session_id}）：")
+                        for f in files[:10]:
+                            sid = f[:-len(".jsonl")]
+                            path = os.path.join(_sdir, f)
+                            try:
+                                with open(path, encoding="utf-8") as fh:
+                                    n = sum(1 for ln in fh if ln.strip())
+                            except OSError:
+                                n = 0
+                            mark = "←当前" if sid == session.session_id else ""
+                            ts = time.strftime("%m-%d %H:%M",
+                                               time.localtime(os.path.getmtime(path)))
+                            print(f"   {sid}  {ts}  {n} 条 {mark}")
+                        print("   切换：/session switch <id>　新建：/session new")
+                elif sub == "new":
+                    session = SessionStore()
+                    last_answer = ""
+                    print(f"🆕 新会话：{session.session_id}（上文已清空）")
+                elif sub == "switch" and target:
+                    path = os.path.join(_sdir, f"{target}.jsonl")
+                    if not os.path.isfile(path):
+                        print(f"❓ 没有这个会话：{target}")
+                    else:
+                        session = SessionStore(session_id=target)
+                        last_answer = ""
+                        msgs = session.messages()
+                        print(f"🔀 已切到 {target}（{len(msgs)} 条消息）")
+                        for m in msgs[-4:]:
+                            role = "你" if m["role"] == "user" else "AI"
+                            body = (m.get("content") or "").replace("\n", " ")[:60]
+                            print(f"   {role}: {body}")
+                elif sub in ("info", ""):
+                    msgs = session.messages()
+                    print(f"📂 当前会话：{session.session_id}，{len(msgs)} 条消息")
+                else:
+                    print("用法：/session [list] | new | switch <id>")
+            elif cmd == "model" or cmd.startswith("model "):
+                arg = cmd.split(None, 1)[1].strip() if " " in cmd else ""
+                profiles, active = load_profiles()
+                if not arg:
+                    print("🤖 模型 / 厂商：")
+                    for p in profiles:
+                        mark = "←当前" if p.get("name") == active else ""
+                        cur_model = p.get("model") or "(未设)"
+                        print(f"   [{p.get('name')}] {p.get('base_url')} {mark}")
+                        print(f"       key {mask_key(p.get('api_key'))}　模型 {cur_model}")
+                        for m in (p.get("models") or []):
+                            star = "*" if m == cur_model else " "
+                            print(f"         {star} {m}")
+                    print("   切换模型：/model <模型名>")
+                    print("   切换厂商：/provider <厂商名>")
+                else:
+                    try:
+                        nonlocal_key = activate_profile(active, arg)
+                        key, base, model = nonlocal_key
+                        print(f"✅ 模型已切换：{arg}（厂商 {active}）")
+                    except Exception as e:
+                        print(f"❌ 切换失败：{e}")
+            elif cmd == "provider" or cmd.startswith("provider "):
+                arg = cmd.split(None, 1)[1].strip() if " " in cmd else ""
+                sub, _, rest = arg.partition(" ")
+                profiles, active = load_profiles()
+                if not arg or sub in ("list", "ls"):
+                    print("🏢 厂商：")
+                    for p in profiles:
+                        mark = "←当前" if p.get("name") == active else ""
+                        print(f"   {p.get('name'):14} {p.get('base_url')}  {mark}")
+                    print("   切换：/provider <名字>")
+                    print("   添加：/provider add <名字> <base_url> <api_key> <模型1,模型2>")
+                    print("   删除：/provider remove <名字>")
+                elif sub == "add":
+                    parts = rest.split()
+                    if len(parts) < 4:
+                        print("用法：/provider add <名字> <base_url> <api_key> <模型1,模型2>")
+                    else:
+                        name, base_url, api_key = parts[0], parts[1], parts[2]
+                        models = parts[3].split(",")
+                        try:
+                            add_profile(name, base_url, api_key, models)
+                            print(f"✅ 已添加厂商 {name}，用 /provider {name} 切换过去")
+                        except Exception as e:
+                            print(f"❌ {e}")
+                elif sub == "remove":
+                    try:
+                        remove_profile(rest.strip())
+                        print(f"✅ 已删除厂商 {rest.strip()}")
+                    except Exception as e:
+                        print(f"❌ {e}")
+                elif sub:
+                    try:
+                        key, base, model = activate_profile(sub)
+                        print(f"✅ 已切到厂商 {sub}，模型 {model}")
+                        print(f"   {base}")
+                    except Exception as e:
+                        print(f"❌ {e}")
             else:
                 print(f"❓ 未知命令 /{cmd}，输入 /help 查看可用命令。")
             continue
@@ -4915,10 +5545,24 @@ def run_chat(key, base, model, yes=False):
                 print(f"⚠️ 生成表格失败：{e}")
             continue
 
+        # ----- 执行期间：非明确的技能需求一律当补充 -----
+        # 代码任务跑着的时候，「敌人」「有血条」以及其它模糊输入不该被路由到
+        # 图片搜索/其它技能；只有明确点名的技能需求（天气/新闻/搜索…）才放行。
+        if _runner.is_busy() and not _is_plan_confirm(req):
+            _p = plan_locally(req, fuzzy=True)
+            _m = str((_p or {}).get("match") or "")
+            if not _p or "人名" in _m:
+                print("💡 当前代码任务执行中，这句当作补充说明记下了。")
+                print("   需要单独执行请等它结束，或用完整需求（如「给敌人加上血条」）。")
+                _remember(f"补充要求：{req.strip()}")
+                continue
+
         # ----- 本地规划阶段：规则库命中即直接执行 -----
         # /mode 显式指定了代码模式时，不让原子/规则库的模糊匹配抢走需求
         # （「审查一下代码」会命中 code-reviewer，用户却已明确要求用代码模式）
-        planned = plan_locally(req, fuzzy=forced_mode is None)
+        # 明确的开发需求同理：要的是写文件，不是调现成技能
+        _dev_req = _looks_like_dev_request(req) or _is_plan_confirm(req)
+        planned = None if _dev_req else plan_locally(req, fuzzy=forced_mode is None)
         if planned:
             # 多步链（总结→md→ppt）：需要借用上一轮内容作为素材
             if planned.get("level") == "chain":
@@ -4973,6 +5617,8 @@ def run_chat(key, base, model, yes=False):
         # 用户用 /mode 指定了模式时优先；否则按任务属性自动路由
         if forced_mode:
             route = route_intent(req, library, key, base, model, forced=forced_mode)
+        elif _dev_req:
+            route = "code"
         else:
             route = route_intent(req, library, key, base, model)
 
@@ -4984,6 +5630,9 @@ def run_chat(key, base, model, yes=False):
                 intent = "code"
             if intent == "task":
                 run_task(req, key, base, model)
+                # 工作流结果要记下来，否则「整理成表格」「总结为ppt」这类
+                # 追问拿不到上文，会被当成新需求重新规划
+                last_answer = getattr(run_task, "last_result", "") or last_answer
                 continue
             if intent == "answer":
                 # 纯问答：直接把问题交给模型回答，不扫描代码、不生成修改

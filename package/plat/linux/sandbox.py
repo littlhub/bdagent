@@ -44,8 +44,16 @@ BUSYBOX_APPLETS = [
 
 
 def data_work_dir(data_dir: str) -> str:
-    """<data>/work —— 技能产出目录。"""
-    path = os.path.realpath(os.path.join(data_dir, WORK_DIRNAME))
+    """<data>/work —— 技能产出目录。
+
+    动态数据在 data/dynamic/，但产出固定落在 data/work/：
+    否则数据目录改名会把历史产出一起搬走。
+    """
+    real = os.path.realpath(data_dir)
+    if os.path.basename(real) == WORK_DIRNAME:
+        path = real
+    else:
+        path = os.path.join(os.path.dirname(real), WORK_DIRNAME)
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -162,8 +170,18 @@ def stage_skill(sandbox_root: str, skills_dir: str, entry: str,
     Python 技能也可能 import 同目录模块。key 用于并行分支隔离。
     """
     skills_name = _skills_name(key)
-    skill_dir = os.path.basename(os.path.dirname(os.path.dirname(entry)))
+    # 技能目录名要从 skills_dir 反推，不能假定入口固定是
+    # <skill>/scripts/x.py：pdr-timer 的入口在 script/pdr/x.py，层数不同。
+    try:
+        rel_entry = os.path.relpath(entry, skills_dir)
+    except ValueError:
+        rel_entry = ""
+    skill_dir = rel_entry.split(os.sep)[0] if rel_entry else ""
     src_dir = os.path.join(skills_dir, skill_dir)
+    if not skill_dir or not os.path.isdir(src_dir):
+        # 反推失败时回退到原来的按层级猜
+        skill_dir = os.path.basename(os.path.dirname(os.path.dirname(entry)))
+        src_dir = os.path.join(skills_dir, skill_dir)
     dst_dir = os.path.join(sandbox_root, skills_name, skill_dir)
     if os.path.isdir(dst_dir):
         shutil.rmtree(dst_dir, ignore_errors=True)

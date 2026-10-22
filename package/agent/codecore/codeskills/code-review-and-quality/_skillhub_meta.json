@@ -1,0 +1,10 @@
+{
+  "name": "代码审查与质量",
+  "installedAt": 1788815253571,
+  "source": "marketplace",
+  "version": "1.0.0",
+  "skillId": "skill_2095470423694323712",
+  "description_zh": "五维度结构化代码审查，合并前使用。",
+  "description_en": "Structured five-axis code review before merging.",
+  "iconSource": "letter:auto"
+}

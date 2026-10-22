@@ -65,7 +65,7 @@ bash install-termux.sh
 Termux 注意事项：
 - 沙箱根放在 `$PREFIX/tmp` 下，不是 `data/work`（Android 部分分区不保留可执行位）
 - 无 root 时不做 chroot，隔离强度弱于 Linux，靠目录边界保证产出只落 `work/`
-- 详见 [`Termux安装.md`](Termux安装.md)
+- 详见 [`Termux安装.md`](memory/docs/Termux安装.md)
 
 ---
 
@@ -86,24 +86,34 @@ dbagent/
 │   ├── tools/                  内置工具（ls / read / write / edit / search / fetch…）
 │   └── dbagent_sys/            上下文、日志、持久 shell
 │
+├── memory/docs/               用户文档（架构、Termux 安装、蛋白树）
+│
 └── workspace/
     ├── skills/                 技能库（每个技能一个目录 + skill.json）
-    └── data/                   配置与数据
-        ├── proteins/index.json       多步链（蛋白）
-        ├── atoms/index.json          单技能（原子）
-        ├── superproteins/index.json  超蛋白层（4 碱基组合）
-        ├── runtime.json              语言规则
-        └── work/                     运行产出（不入库）
+    └── data/
+        ├── dynamic/            配置与数据（可整体替换的「基因库」）
+        │   ├── proteins/index.json       多步链（蛋白）
+        │   ├── polypeptides/index.json   密码子组合（多肽）
+        │   ├── atoms/index.json          单技能（原子）
+        │   ├── superproteins/index.json  超蛋白层（4 碱基组合）
+        │   ├── words/                    词表（问候语、泛词、别名等）
+        │   └── runtime.json              语言规则
+        │
+        └── work/               运行产出（不入库）
 ```
+
+> `data/dynamic/` 是数据与代码分离的关键：整目录可替换、可分发，
+> 内核只按约定读，不硬编码任何技能名。
+> 产出单独落在同级 `data/work/`，替换 `dynamic/` 不会丢产物。
 
 ### 规划分层
 
 请求进来后按成本从低到高逐层匹配，命中即止：
 
 ```
-1. 蛋白库规则   proteins/index.json 的 rules + priority   0 次 LLM
+1. 蛋白库规则   dynamic/proteins/index.json 的 rules + priority   0 次 LLM
 2. 蛋白关键词   keywords 精确/弱匹配                       0 次 LLM
-3. 原子触发词   atoms/index.json 的 triggers               0 次 LLM
+3. 原子触发词   dynamic/atoms/index.json 的 triggers               0 次 LLM
 4. LLM 分类     兜底，交给模型判断意图                     1 次 LLM
 ```
 
@@ -111,7 +121,7 @@ dbagent/
 
 内核不认识具体技能。以下概念全部由配置声明：
 
-**蛋白（多步链）** — `workspace/data/proteins/index.json`
+**蛋白（多步链）** — `workspace/data/dynamic/proteins/index.json`
 
 ```json
 {
@@ -136,7 +146,7 @@ dbagent/
 - `produces_text` — 该步输出可作为后续提示词
 - `defaults` — 必填参数缺省值
 
-**原子（单技能）** — `workspace/data/atoms/index.json`
+**原子（单技能）** — `workspace/data/dynamic/atoms/index.json`
 
 ```json
 {
@@ -147,7 +157,7 @@ dbagent/
 }
 ```
 
-**语言规则** — `workspace/data/runtime.json`
+**语言规则** — `workspace/data/dynamic/runtime.json`
 
 ```json
 {
@@ -214,7 +224,6 @@ dbagent/
 
 ## 文档
 
-- [`项目架构.md`](项目架构.md) — 模块职责与数据流
-- [`PROTEIN_TREE.md`](PROTEIN_TREE.md) — 蛋白树结构
-- [`Termux安装.md`](Termux安装.md) — Android 部署细节
-- [`问题修复.md`](问题修复.md) — 已知问题与修复记录
+- [`项目架构.md`](memory/docs/项目架构.md) — 模块职责与数据流
+- [`PROTEIN_TREE.md`](memory/docs/PROTEIN_TREE.md) — 蛋白树结构
+- [`Termux安装.md`](memory/docs/Termux安装.md) — Android 部署细节

@@ -35,7 +35,7 @@ import tempfile
 
 SANDBOX_ROOT_NAME = "dbagent-sandbox"
 WORK_DIRNAME = "work"
-EXEC_TIMEOUT = 120
+EXEC_TIMEOUT = 300
 
 # Windows 上技能脚本多为 GBK 输出；先按 UTF-8 解码，失败再退回 GBK。
 DECODE_CANDIDATES = ("utf-8", "gbk", "cp936", "latin-1")
@@ -63,8 +63,15 @@ def sandbox_root() -> str:
 
 
 def data_work_dir(data_dir: str) -> str:
-    """<data>/work —— 技能产出目录（与 Linux 版一致）。"""
-    path = os.path.realpath(os.path.join(data_dir, WORK_DIRNAME))
+    """<data>/work —— 技能产出目录（与 Linux 版一致）。
+
+    动态数据在 data/dynamic/，产出固定落在 data/work/。
+    """
+    real = os.path.realpath(data_dir)
+    if os.path.basename(real) == WORK_DIRNAME:
+        path = real
+    else:
+        path = os.path.join(os.path.dirname(real), WORK_DIRNAME)
     os.makedirs(path, exist_ok=True)
     return path
 

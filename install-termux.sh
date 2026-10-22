@@ -27,15 +27,21 @@ die()  { printf '\033[1;31m[错误] %s\033[0m\n' "$*" >&2; exit 1; }
 if [ -z "${PREFIX:-}" ] || [ ! -d "${PREFIX:-/nonexistent}" ]; then
     warn "看起来不是 Termux 环境。脚本按 Termux 路径处理，其他 Linux 可手动 pip install -r requirements.txt"
 fi
-command -v python3 >/dev/null 2>&1 || die "找不到 python3，先运行：pkg install -y python"
-command -v unzip >/dev/null 2>&1 || die "找不到 unzip，先运行：pkg install -y unzip"
 
 # ---------- 1. 安装基础包 ----------
+# 基础包只是锦上添花：python3/unzip 已就绪时，pkg 失败（如 dpkg 被打断）
+# 不能阻断后面的代码解压，否则用户以为装上了其实跑的还是旧代码。
 if command -v pkg >/dev/null 2>&1; then
     say "安装基础包（python / unzip）"
-    pkg update -y >/dev/null 2>&1 || warn "pkg update 失败，继续尝试安装"
-    pkg install -y python unzip >/dev/null 2>&1 || pkg install -y python unzip \
-        || die "pkg install 失败，请检查网络或手动安装 python/unzip"
+    pkg update -y >/dev/null 2>&1 || warn "pkg update 失败，继续"
+    pkg install -y python unzip \
+        || warn "pkg install 失败；若 python3/unzip 已可用可忽略"
+fi
+if ! command -v python3 >/dev/null 2>&1; then
+    die "找不到 python3。若报 dpkg 错误，先执行：dpkg --configure -a"
+fi
+if ! command -v unzip >/dev/null 2>&1; then
+    die "找不到 unzip。若报 dpkg 错误，先执行：dpkg --configure -a"
 fi
 
 # ---------- 2. 找到并解压 zip ----------

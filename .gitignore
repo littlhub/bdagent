@@ -13,8 +13,6 @@ __pycache__/
 venv/
 
 # ===== 运行产物 =====
-package/treegraph_full.json
-package/treemind.html
 workspace/data/work/
 *.log
 
@@ -32,3 +30,15 @@ _legacy_dupes/
 
 # 路由缓存（自动生成）
 route_cache.json
+
+# ===== 开发记忆：只排除 memory 根下的文件 =====
+# memory/docs/ 是用户文档，要随包发布，所以不用不带斜杠的 memory/
+memory/*.md
+memory/*.json
+memory/*.html
+
+# ===== 结构分析产物（可重新生成）=====
+treegraph_full.json
+treemind.html
+package/treegraph_full.json
+package/treemind.html

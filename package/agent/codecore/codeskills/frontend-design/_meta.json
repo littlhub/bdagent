@@ -1,0 +1,26 @@
+{
+  "slug": "frontend-design",
+  "title": "前端设计 / Frontend Design",
+  "version": "1.0.0",
+  "author": "zxh",
+  "runtime": "generic",
+  "emoji": "🧩",
+  "color": "orange",
+  "tags": [
+    "前端设计",
+    "网页设计",
+    "UI 视觉",
+    "动效设计",
+    "排版",
+    "Frontend Design",
+    "Web UI",
+    "Motion Design",
+    "Typography"
+  ],
+  "description": "生成极具视觉冲击力的生产级前端界面：独特排版、统一色彩主题、编排动效与非对称布局，直接产出可运行代码，告别千篇一律的 AI 味设计。",
+  "description_en": "Distinctive, production-grade frontend interfaces with bold typography, committed themes and orchestrated motion — shipped as real working code, never AI slop.",
+  "display_name": "前端设计",
+  "display_name_en": "Frontend Design",
+  "description_zh": "生成极具视觉冲击力的生产级前端界面：独特排版、统一色彩主题、编排动效与非对称布局，直接产出可运行代码，告别千篇一律的 AI 味设计。",
+  "category": "design"
+}

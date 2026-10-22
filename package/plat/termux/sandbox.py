@@ -41,7 +41,15 @@ def sandbox_root() -> str:
 
 
 def data_work_dir(data_dir: str) -> str:
-    path = os.path.realpath(os.path.join(data_dir, WORK_DIRNAME))
+    """<data>/work —— 技能产出目录。
+
+    动态数据在 data/dynamic/，产出固定落在 data/work/。
+    """
+    real = os.path.realpath(data_dir)
+    if os.path.basename(real) == WORK_DIRNAME:
+        path = real
+    else:
+        path = os.path.join(os.path.dirname(real), WORK_DIRNAME)
     os.makedirs(path, exist_ok=True)
     return path
 

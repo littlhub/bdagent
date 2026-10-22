@@ -13,16 +13,161 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import socket
 import urllib.error
 import urllib.parse
 import urllib.request
+from html.parser import HTMLParser
+
+
+def enable_ipv4_first():
+    """让 socket 优先只用 IPv4。
+
+    PC 上 IPv6 路由常不通，系统却按 getaddrinfo 顺序先试 IPv6：
+    实测 apihub.agnes-ai.com 的 IPv4 直连 0.26s，IPv6 要等 20s 才超时，
+    默认连接因此拖到 42s。新闻站 16~48s 的连接耗时也是同一原因。
+    没有 IPv4 地址时才回退 IPv6，保留纯 IPv6 环境的可用性。
+    设 DBAGENT_IPV4_FIRST=0 可关闭。
+    """
+    if os.environ.get("DBAGENT_IPV4_FIRST", "1") == "0":
+        return False
+    if getattr(socket.getaddrinfo, "_dbagent_ipv4", False):
+        return True
+
+    real = socket.getaddrinfo
+
+    def ipv4_first(host, port, family=0, type=0, proto=0, flags=0):
+        infos = real(host, port, family, type, proto, flags)
+        v4 = [i for i in infos if i[0] == socket.AF_INET]
+        return v4 or infos
+
+    ipv4_first._dbagent_ipv4 = True
+    socket.getaddrinfo = ipv4_first
+    return True
+
+
+enable_ipv4_first()
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
       "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36")
 
 MAX_BYTES = 2 * 1024 * 1024
+
+# 搜索走 Parallel AI 的公开 MCP 接口（与 AiCode 同源）。
+# 搜索引擎抓 HTML 的结果里常混进导航、热榜、黄历站，
+# MCP 返回的是带标题/URL/摘要的结构化条目。
+PARALLEL_MCP_URL = "https://search.parallel.ai/mcp"
+SEARCH_SESSION_ID = "aicode-android"
+SEARCH_READ_TIMEOUT = 30
+
+
+def _parse_mcp_response(body):
+    """兼容直接 JSON 与 SSE（data: 前缀）两种返回体，取 result.content[0].text。"""
+    for line in (body or "").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith("data: "):
+            candidate = line[6:]
+        elif line.startswith("{"):
+            candidate = line
+        else:
+            continue
+        try:
+            data = json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+        result = data.get("result")
+        if isinstance(result, dict):
+            content = result.get("content")
+            if isinstance(content, list) and content and isinstance(content[0], dict):
+                text = content[0].get("text")
+                if text:
+                    return text
+    return None
+
+
+def _search_parallel(query, limit=8):
+    """通过 Parallel MCP 搜索，返回条目列表；失败返回 None。"""
+    payload = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "tools/call",
+        "params": {
+            "name": "web_search",
+            "arguments": {
+                "objective": query,
+                "search_queries": [query],
+                "session_id": SEARCH_SESSION_ID,
+            },
+        },
+    }
+    req = urllib.request.Request(
+        PARALLEL_MCP_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Accept": "application/json, text/event-stream",
+            "Content-Type": "application/json",
+            "User-Agent": "aicode/1.0",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=SEARCH_READ_TIMEOUT) as resp:
+            body = resp.read().decode("utf-8", errors="ignore")
+    except Exception:
+        return None
+
+    raw = _parse_mcp_response(body)
+    if not raw:
+        return None
+
+    items = []
+    try:
+        data = json.loads(raw.strip())
+    except json.JSONDecodeError:
+        return None
+    for r in (data.get("results") or []):
+        url = r.get("url") or ""
+        if not url:
+            continue
+        excerpts = r.get("excerpts") or []
+        snippet = " ".join(" ".join(str(e).split()) for e in excerpts[:3])
+        items.append({
+            "title": (r.get("title") or "(无标题)").strip(),
+            "url": url,
+            "snippet": snippet,
+            "publish_date": r.get("publish_date"),
+        })
+        if len(items) >= limit:
+            break
+    return items or None
+
+
+def _maybe_decompress(raw, content_encoding=""):
+    """解掉 gzip/deflate。
+
+    有的站点（如 m.gmw.cn）即使客户端没发 Accept-Encoding: gzip，
+    也返回压缩体；不解压就当文本解码，结果全是乱码。
+    """
+    if not raw:
+        return raw
+    enc = (content_encoding or "").lower()
+    try:
+        if raw[:2] == b"\x1f\x8b" or "gzip" in enc:
+            import gzip
+            return gzip.decompress(raw)
+        if raw[:2] == b"x\x9c" or "deflate" in enc:
+            import zlib
+            try:
+                return zlib.decompress(raw)
+            except zlib.error:
+                return zlib.decompress(raw, -zlib.MAX_WBITS)
+    except Exception:
+        return raw
+    return raw
 
 
 def _decode(raw, content_type=""):
@@ -37,6 +182,61 @@ def _decode(raw, content_type=""):
         except (UnicodeDecodeError, LookupError):
             continue
     return raw.decode("utf-8", errors="replace")
+
+
+# 正文提取：用 HTMLParser 逐标签收集文字，比正则去标签更准，
+# 也不会把 <head> 里的 meta 描述混进正文。
+_BLOCK_TAGS = {"p", "h1", "h2", "h3", "h4", "h5", "h6", "li", "div", "br",
+               "tr", "section", "article"}
+_SKIP_TAGS = {"script", "style", "iframe", "nav", "footer", "header",
+              "noscript", "svg", "aside", "details", "select", "head"}
+_SKIP_CLASSES = {"ad", "advertisement"}
+
+
+class _TextExtractor(HTMLParser):
+    """提取正文：跳过脚本/样式/导航/筛选器，块级元素间保留换行。"""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts = []
+        self.skip = 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in _SKIP_TAGS:
+            self.skip += 1
+            return
+        classes = dict(attrs).get("class") or ""
+        if _SKIP_CLASSES.intersection(classes.split()):
+            self.skip += 1
+            return
+        if tag in _BLOCK_TAGS:
+            self.parts.append("\n")
+
+    def handle_startendtag(self, tag, attrs):
+        if tag in _BLOCK_TAGS:
+            self.parts.append("\n")
+
+    def handle_endtag(self, tag):
+        if tag in _SKIP_TAGS:
+            self.skip = max(0, self.skip - 1)
+            return
+        if tag in _BLOCK_TAGS:
+            self.parts.append("\n")
+
+    def handle_data(self, data):
+        if self.skip == 0:
+            self.parts.append(data)
+
+    def text(self):
+        lines = ("".join(self.parts)).splitlines()
+        return "\n".join(" ".join(ln.split()) for ln in lines if ln.strip())
+
+
+def _extract_text(html):
+    parser = _TextExtractor()
+    parser.feed(html)
+    parser.close()
+    return parser.text()
 
 
 def _strip_html(html):
@@ -81,6 +281,7 @@ def _request(url, timeout=30):
     try:
         resp = urllib.request.urlopen(req, timeout=timeout)
         ctype = resp.headers.get("Content-Type", "")
+        cenc = resp.headers.get("Content-Encoding", "")
         final = resp.geturl()
         try:
             raw = resp.read(MAX_BYTES)
@@ -89,7 +290,7 @@ def _request(url, timeout=30):
             raw = e.partial or b""
             if len(raw) < 2048:
                 return False, f"响应不完整（仅 {len(raw)} 字节）", url
-        return True, _decode(raw, ctype), final
+        return True, _decode(_maybe_decompress(raw, cenc), ctype), final
     except urllib.error.HTTPError as e:
         return False, f"HTTP {e.code} {e.reason}", url
     except urllib.error.URLError as e:
@@ -118,7 +319,10 @@ def cmd_fetch(url, max_chars=8000):
     ok, text, final = _request(url)
     if not ok:
         return {"ok": False, "error": text, "url": url}
-    body = _strip_html(text)
+    body = _extract_text(text)
+    # 个别站点（或纯文本/gzip 误判）用 HTMLParser 抽不出东西，退回正则方案
+    if not body.strip():
+        body = _strip_html(text)
     truncated = len(body) > max_chars
     if truncated:
         body = body[:max_chars] + "\n...(已截断)"
@@ -232,12 +436,18 @@ def is_entertainment_query(query):
 def cmd_search(query, limit=8):
     """联网搜索。
 
-    按内容类型选源：
+    优先 Parallel AI 的 MCP 接口（结构化结果，质量明显好于抓搜索页）；
+    不可用时退回搜索引擎直抓：
       · 娱乐/明星类 → 今日头条、B站（官方媒体没有这类内容）
       · 其它 → Bing，失败退搜狗
 
     注意：DuckDuckGo 在国内网络不可达，不要作为主源。
     """
+    results = _search_parallel(query, limit)
+    if results:
+        return {"ok": True, "query": query, "source": "parallel",
+                "count": len(results), "results": results}
+
     q = urllib.parse.quote_plus(query or "")
 
     if is_entertainment_query(query):
