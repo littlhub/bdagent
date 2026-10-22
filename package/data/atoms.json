@@ -1,0 +1,140 @@
+{
+  "A1": {
+    "skill": "skill_01",
+    "name": "技能1",
+    "nickname": "S1",
+    "abbreviation": "SK1"
+  },
+  "A2": {
+    "skill": "skill_02",
+    "name": "技能2",
+    "nickname": "S2",
+    "abbreviation": "SK2"
+  },
+  "A3": {
+    "skill": "skill_03",
+    "name": "技能3",
+    "nickname": "S3",
+    "abbreviation": "SK3"
+  },
+  "A4": {
+    "skill": "skill_04",
+    "name": "技能4",
+    "nickname": "S4",
+    "abbreviation": "SK4"
+  },
+  "A5": {
+    "skill": "skill_05",
+    "name": "技能5",
+    "nickname": "S5",
+    "abbreviation": "SK5"
+  },
+  "A6": {
+    "skill": "skill_06",
+    "name": "技能6",
+    "nickname": "S6",
+    "abbreviation": "SK6"
+  },
+  "A7": {
+    "skill": "skill_07",
+    "name": "技能7",
+    "nickname": "S7",
+    "abbreviation": "SK7"
+  },
+  "A8": {
+    "skill": "skill_08",
+    "name": "技能8",
+    "nickname": "S8",
+    "abbreviation": "SK8"
+  },
+  "A9": {
+    "skill": "skill_09",
+    "name": "技能9",
+    "nickname": "S9",
+    "abbreviation": "SK9"
+  },
+  "A10": {
+    "skill": "skill_10",
+    "name": "技能10",
+    "nickname": "S10",
+    "abbreviation": "SK10"
+  },
+  "A11": {
+    "skill": "skill_11",
+    "name": "技能11",
+    "nickname": "S11",
+    "abbreviation": "SK11"
+  },
+  "A12": {
+    "skill": "skill_12",
+    "name": "技能12",
+    "nickname": "S12",
+    "abbreviation": "SK12"
+  },
+  "A13": {
+    "skill": "skill_13",
+    "name": "技能13",
+    "nickname": "S13",
+    "abbreviation": "SK13"
+  },
+  "A14": {
+    "skill": "skill_14",
+    "name": "技能14",
+    "nickname": "S14",
+    "abbreviation": "SK14"
+  },
+  "A15": {
+    "skill": "skill_15",
+    "name": "技能15",
+    "nickname": "S15",
+    "abbreviation": "SK15"
+  },
+  "A16": {
+    "skill": "skill_16",
+    "name": "技能16",
+    "nickname": "S16",
+    "abbreviation": "SK16"
+  },
+  "A17": {
+    "skill": "skill_17",
+    "name": "技能17",
+    "nickname": "S17",
+    "abbreviation": "SK17"
+  },
+  "A18": {
+    "skill": "skill_18",
+    "name": "技能18",
+    "nickname": "S18",
+    "abbreviation": "SK18"
+  },
+  "A19": {
+    "skill": "skill_19",
+    "name": "技能19",
+    "nickname": "S19",
+    "abbreviation": "SK19"
+  },
+  "A20": {
+    "skill": "skill_20",
+    "name": "技能20",
+    "nickname": "S20",
+    "abbreviation": "SK20"
+  },
+  "A21": {
+    "skill": "skill_21",
+    "name": "技能21",
+    "nickname": "S21",
+    "abbreviation": "SK21"
+  },
+  "A22": {
+    "skill": "skill_22",
+    "name": "技能22",
+    "nickname": "S22",
+    "abbreviation": "SK22"
+  },
+  "A23": {
+    "skill": "skill_23",
+    "name": "技能23",
+    "nickname": "S23",
+    "abbreviation": "SK23"
+  }
+}

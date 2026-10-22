@@ -1,0 +1,1692 @@
+{
+  "history": [
+    {
+      "time": "2026-10-19 11:18:10",
+      "skills": [
+        "pptx"
+      ],
+      "ok": true,
+      "duration": 1.2,
+      "tokens": 500
+    },
+    {
+      "time": "2026-10-19 11:21:42",
+      "skills": [
+        "write"
+      ],
+      "ok": true,
+      "duration": 0.01,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-19 12:25:03",
+      "skills": [
+        "pptx"
+      ],
+      "ok": true,
+      "duration": 1.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 14:00:10",
+      "skills": [
+        "memory-image-generation-v2",
+        "memory-sync"
+      ],
+      "ok": false,
+      "duration": 0.04,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 14:27:09",
+      "skills": [
+        "memory-image-generation"
+      ],
+      "ok": false,
+      "duration": 0.8,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 14:37:59",
+      "skills": [
+        "memory-image-generation"
+      ],
+      "ok": false,
+      "duration": 0.74,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:12:51",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.1,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:12:52",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:13:06",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.03,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:13:07",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.05,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:21:15",
+      "skills": [
+        "skill-creator"
+      ],
+      "ok": false,
+      "duration": 0.1,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:22:02",
+      "skills": [
+        "skill-creator"
+      ],
+      "ok": false,
+      "duration": 0.03,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:28:09",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:28:46",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.04,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:49:39",
+      "skills": [
+        "skill-creator"
+      ],
+      "ok": false,
+      "duration": 0.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:50:14",
+      "skills": [
+        "skill-creator"
+      ],
+      "ok": false,
+      "duration": 0.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:53:54",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.06,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 15:55:47",
+      "skills": [
+        "pptx"
+      ],
+      "ok": true,
+      "duration": 35.23,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:00:37",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.04,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:16:39",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.03,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:19:17",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.01,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:25:38",
+      "skills": [
+        "skill-creator"
+      ],
+      "ok": false,
+      "duration": 0.07,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:25:40",
+      "skills": [
+        "skill-creator"
+      ],
+      "ok": false,
+      "duration": 0.08,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:25:58",
+      "skills": [
+        "text-editor"
+      ],
+      "ok": false,
+      "duration": 1.09,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:32:27",
+      "skills": [
+        "text-editor"
+      ],
+      "ok": false,
+      "duration": 1.41,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:41:57",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.01,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 16:48:01",
+      "skills": [
+        "ls",
+        "find"
+      ],
+      "ok": false,
+      "duration": 0.44,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-19 16:56:03",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.13,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 17:04:47",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 17:15:55",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 17:43:39",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.07,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-19 18:11:06",
+      "skills": [
+        "code-reviewer"
+      ],
+      "ok": false,
+      "duration": 0.05,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 08:49:17",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": false,
+      "duration": 0.0,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 09:37:40",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": false,
+      "duration": 0.0,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 09:38:06",
+      "skills": [
+        "visioncustom"
+      ],
+      "ok": false,
+      "duration": 0.4,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 10:21:52",
+      "skills": [
+        "bash"
+      ],
+      "ok": false,
+      "duration": 4.7,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 10:34:45",
+      "skills": [
+        "search"
+      ],
+      "ok": true,
+      "duration": 0.42,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 10:37:32",
+      "skills": [
+        "search"
+      ],
+      "ok": true,
+      "duration": 0.37,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 10:41:31",
+      "skills": [
+        "search"
+      ],
+      "ok": true,
+      "duration": 1.22,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 10:58:20",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": false,
+      "duration": 0.12,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 10:59:36",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": false,
+      "duration": 0.16,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:07:13",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 109.66,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:09:27",
+      "skills": [
+        "search"
+      ],
+      "ok": true,
+      "duration": 0.46,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 11:11:33",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 22.21,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:12:02",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": false,
+      "duration": 19.16,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:12:31",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 28.89,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:13:56",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": false,
+      "duration": 28.75,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:18:34",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 34.36,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 11:20:07",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 36.0,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:28:00",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 29.93,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:48:31",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": false,
+      "duration": 0.0,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 11:54:04",
+      "skills": [
+        "person-image-search",
+        "image-text-overlay"
+      ],
+      "ok": false,
+      "duration": 2.0,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:56:09",
+      "skills": [
+        "person-image-search",
+        "image-text-overlay"
+      ],
+      "ok": false,
+      "duration": 2.21,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:57:17",
+      "skills": [
+        "person-image-search",
+        "image-text-overlay"
+      ],
+      "ok": false,
+      "duration": 1.57,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:57:50",
+      "skills": [
+        "person-image-search",
+        "image-text-overlay"
+      ],
+      "ok": true,
+      "duration": 1.67,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 11:59:50",
+      "skills": [
+        "memory-image-generation"
+      ],
+      "ok": false,
+      "duration": 0.41,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:00:46",
+      "skills": [
+        "memory-image-generation"
+      ],
+      "ok": false,
+      "duration": 0.4,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:05:37",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.77,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:05:40",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.18,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:06:47",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.52,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:09:22",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 12.47,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 12:24:14",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.52,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:28:35",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.16,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:28:59",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 1.66,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:29:23",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 1.66,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 12:29:52",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 1.6,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 15:16:12",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 0.88,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 15:17:46",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 4.06,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 15:22:00",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.57,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 15:24:11",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.26,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 15:37:18",
+      "skills": [
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 0.42,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 15:43:24",
+      "skills": [
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 14.02,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 15:53:46",
+      "skills": [
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 13.83,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 16:00:44",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 2.89,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:02:08",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 14.91,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:05:49",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.3,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 16:07:09",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 3.26,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:09:31",
+      "skills": [
+        "person-image-search",
+        "visioncustom"
+      ],
+      "ok": true,
+      "duration": 15.23,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:09:54",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 11.96,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:11:36",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 22.92,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:13:11",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 27.31,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:22:37",
+      "skills": [
+        "plan-character-workflow"
+      ],
+      "ok": false,
+      "duration": 0.0,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:23:28",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 3.28,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-20 16:25:42",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 14.13,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:25:52",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 2.09,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:27:59",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 25.26,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:29:04",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 20.22,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:30:22",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 18.82,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:33:49",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 19.36,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:34:24",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 22.33,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:35:04",
+      "skills": [
+        "person-image-search",
+        "visioncustom"
+      ],
+      "ok": true,
+      "duration": 12.86,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:35:57",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 17.73,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:44:35",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 37.16,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:46:18",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 33.27,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 16:47:20",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 38.37,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 17:57:14",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 2.54,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 18:23:18",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 7.92,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 18:29:26",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 19.65,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 18:34:02",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 27.3,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 18:36:58",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": false,
+      "duration": 0.87,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 18:53:37",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 121.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:01:03",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": false,
+      "duration": 12.06,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:10:55",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 56.12,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:12:27",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 40.58,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:16:50",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 41.37,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:21:42",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 144.26,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:35:33",
+      "skills": [
+        "person-image-search"
+      ],
+      "ok": true,
+      "duration": 8.15,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 19:36:38",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 42.95,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:49:40",
+      "skills": [
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 0.26,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 19:49:51",
+      "skills": [
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 0.31,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 19:51:20",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 54.2,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:53:20",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 35.24,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 19:54:22",
+      "skills": [
+        "context",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 16.78,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 20:00:36",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": false,
+      "duration": 20.61,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 20:06:46",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 49.9,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 20:15:30",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 2.39,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:15:35",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 4.16,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:16:13",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 2.14,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:16:17",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 4.04,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:26:35",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 2.3,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:26:40",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 4.32,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:28:06",
+      "skills": [
+        "person-image-search",
+        "person-image-search",
+        "visioncustom",
+        "visioncustom",
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 51.63,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 20:28:09",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 2.21,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:28:14",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 4.15,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:28:57",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 2.5,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:29:02",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 4.09,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 20:30:26",
+      "skills": [
+        "person-image-search",
+        "person-image-search",
+        "visioncustom",
+        "visioncustom",
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 58.16,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 20:32:25",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image",
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 57.63,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 20:42:05",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image",
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 125.29,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 21:01:57",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 2.13,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 21:03:53",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 61.55,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 21:16:15",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 0.4,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 21:16:36",
+      "skills": [
+        "agnes-image",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 0.19,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 21:18:38",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 58.81,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 21:23:17",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 68.73,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 21:29:22",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 3.86,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 21:31:33",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 57.52,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 21:37:53",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 6.98,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 21:40:23",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 68.56,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 21:50:57",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 3.62,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 21:52:54",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 59.11,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-20 21:56:56",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 4.07,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 21:58:07",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 5.91,
+      "tokens": 0,
+      "source": "test"
+    },
+    {
+      "time": "2026-10-20 22:00:42",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 70.59,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-21 16:08:47",
+      "skills": [
+        "weather-query"
+      ],
+      "ok": true,
+      "duration": 2.65,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-21 16:14:22",
+      "skills": [
+        "search"
+      ],
+      "ok": true,
+      "duration": 2.5,
+      "tokens": 0,
+      "source": "llm"
+    },
+    {
+      "time": "2026-10-21 16:18:54",
+      "skills": [
+        "github-trending"
+      ],
+      "ok": true,
+      "duration": 1.94,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-21 16:37:25",
+      "skills": [
+        "search"
+      ],
+      "ok": true,
+      "duration": 1.96,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 11:09:32",
+      "skills": [
+        "weather-query"
+      ],
+      "ok": true,
+      "duration": 3.2,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 11:24:55",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 66.06,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 11:26:30",
+      "skills": [
+        "person-image-search",
+        "visioncustom",
+        "agnes-image"
+      ],
+      "ok": true,
+      "duration": 38.25,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 12:00:26",
+      "skills": [
+        "weather-query"
+      ],
+      "ok": true,
+      "duration": 1.92,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 12:53:07",
+      "skills": [
+        "weather-query"
+      ],
+      "ok": true,
+      "duration": 1.73,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 15:36:20",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 133.02,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 17:04:58",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 35.21,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 17:06:23",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 12.3,
+      "tokens": 0,
+      "source": "local"
+    },
+    {
+      "time": "2026-10-22 17:15:27",
+      "skills": [
+        "web-summarizer"
+      ],
+      "ok": true,
+      "duration": 123.41,
+      "tokens": 0,
+      "source": "local"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "P1": {
+    "skill_chain": [
+      "skill_01",
+      "skill_02",
+      "skill_03"
+    ],
+    "gene_chain": "1-2-3",
+    "atcg_gene_chain": "AAAAATAAC",
+    "hash": "8b511c8234af9eced2b071e4ab114f23"
+  },
+  "P2": {
+    "skill_chain": [
+      "skill_04",
+      "skill_05",
+      "skill_06"
+    ],
+    "gene_chain": "4-5-6",
+    "atcg_gene_chain": "AAGATAATT",
+    "hash": "b3b1e93276185af263ff3ede3ba7a723"
+  }
+}

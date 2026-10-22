@@ -1,0 +1,116 @@
+[
+  {
+    "id": "g-1792381591518-4bd7ad",
+    "time": 1792381591.5187964,
+    "family": "delete",
+    "tool": "bash",
+    "session_id": "dbagent",
+    "cwd": "G:\\deepwork\\workspase\\dbagent\\workspace\\data\\work",
+    "targets": [],
+    "reasons": [
+      "破坏性命令：rm -rf / rm -f"
+    ],
+    "command": "rm -rf /",
+    "output": "$ rm -rf /",
+    "status": "blocked",
+    "scope": null
+  },
+  {
+    "id": "g-1792381464910-072131",
+    "time": 1792381464.9109888,
+    "family": "delete",
+    "tool": "bash",
+    "session_id": "dbagent",
+    "cwd": "G:\\deepwork\\workspase\\dbagent\\workspace\\data\\work",
+    "targets": [],
+    "reasons": [
+      "破坏性命令：Remove-Item -Recurse"
+    ],
+    "command": "Remove-Item -Recurse -Force .",
+    "output": "$ Remove-Item -Recurse -Force .",
+    "status": "blocked",
+    "scope": null
+  },
+  {
+    "id": "g-1792381464900-0a8ed0",
+    "time": 1792381464.9009933,
+    "family": "delete",
+    "tool": "bash",
+    "session_id": "dbagent",
+    "cwd": "G:\\deepwork\\workspase\\dbagent\\workspace\\data\\work",
+    "targets": [],
+    "reasons": [
+      "破坏性命令：rm -rf / rm -f"
+    ],
+    "command": "rm -rf /",
+    "output": "$ rm -rf /",
+    "status": "blocked",
+    "scope": null
+  },
+  {
+    "id": "g-1792381258184-2283a7",
+    "time": 1792381258.1841369,
+    "family": "delete",
+    "tool": "bash",
+    "session_id": "dbagent",
+    "cwd": "G:\\deepwork\\workspase\\dbagent\\workspace\\data\\work",
+    "targets": [],
+    "reasons": [
+      "破坏性命令：Remove-Item -Recurse"
+    ],
+    "command": "Remove-Item -Recurse -Force .",
+    "output": "$ Remove-Item -Recurse -Force .",
+    "status": "blocked",
+    "scope": null
+  },
+  {
+    "id": "g-1792381258173-1e8615",
+    "time": 1792381258.173137,
+    "family": "delete",
+    "tool": "bash",
+    "session_id": "dbagent",
+    "cwd": "G:\\deepwork\\workspase\\dbagent\\workspace\\data\\work",
+    "targets": [],
+    "reasons": [
+      "破坏性命令：rm -rf / rm -f"
+    ],
+    "command": "rm -rf /",
+    "output": "$ rm -rf /",
+    "status": "blocked",
+    "scope": null
+  },
+  {
+    "id": "g-1792381236358-c8f779",
+    "time": 1792381236.358736,
+    "family": "delete",
+    "tool": "bash",
+    "session_id": "dbagent",
+    "cwd": "G:\\deepwork\\workspase",
+    "targets": [],
+    "reasons": [
+      "破坏性命令：del /f /q",
+      "批量删除：del 通配符",
+      "含通配符，可能一次删掉大量文件"
+    ],
+    "command": "del /f /s /q C:\\*",
+    "output": "$ del /f /s /q C:\\*",
+    "status": "blocked",
+    "scope": null
+  },
+  {
+    "id": "g-1792381236355-9e29df",
+    "time": 1792381236.3557353,
+    "family": "delete",
+    "tool": "bash",
+    "session_id": "dbagent",
+    "cwd": "G:\\deepwork\\workspase",
+    "targets": [],
+    "reasons": [
+      "破坏性命令：rm -rf / rm -f"
+    ],
+    "command": "rm -rf /",
+    "output": "$ rm -rf /",
+    "status": "blocked",
+    "scope": null
+  }
+]

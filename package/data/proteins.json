@@ -1,0 +1,32 @@
+{
+  "Prot1": {
+    "fold_tree": {
+      "name": "Start",
+      "children": [
+        {
+          "name": "2",
+          "children": []
+        },
+        {
+          "name": "3",
+          "children": [
+            {
+              "name": "1",
+              "children": []
+            },
+            {
+              "name": "5",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Stop",
+          "children": []
+        }
+      ],
+      "peptide_index": "P1"
+    },
+    "peptide_gene_path": "Start-2;Start-3-1;Start-3-5;Start-Stop"
+  }
+}

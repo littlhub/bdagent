@@ -1,0 +1,150 @@
+{
+  "history": [
+    {
+      "timestamp": "2026-08-23T09:54:31.975644",
+      "skill": "visioncustom",
+      "input_tokens": 1282,
+      "output_tokens": 413,
+      "total_tokens": 1695,
+      "duration": 2.5,
+      "tokens_per_second": 678.0
+    },
+    {
+      "timestamp": "2026-08-23T09:54:33.063629",
+      "skill": "skill-tracker",
+      "input_tokens": 100,
+      "output_tokens": 50,
+      "total_tokens": 150,
+      "duration": 1.0,
+      "tokens_per_second": 150.0
+    },
+    {
+      "timestamp": "2026-08-23T09:54:52.025756",
+      "skill": "memory-sync",
+      "input_tokens": 200,
+      "output_tokens": 100,
+      "total_tokens": 300,
+      "duration": 1.5,
+      "tokens_per_second": 200.0
+    },
+    {
+      "timestamp": "2026-08-23T09:55:12.714296",
+      "skill": "skill-tracker",
+      "input_tokens": 500,
+      "output_tokens": 200,
+      "total_tokens": 700,
+      "duration": 2.0,
+      "tokens_per_second": 350.0
+    },
+    {
+      "timestamp": "2026-08-23T09:55:34.366015",
+      "skill": "skill-tracker",
+      "input_tokens": 300,
+      "output_tokens": 150,
+      "total_tokens": 450,
+      "duration": 1.5,
+      "tokens_per_second": 300.0
+    },
+    {
+      "timestamp": "2026-08-23T10:29:14.859588",
+      "skill": "skill-planner,memory-image-generation",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "duration": 3.5,
+      "tokens_per_second": 0.0
+    },
+    {
+      "timestamp": "2026-08-23T10:29:35.886258",
+      "skill": "skill-planner",
+      "round_type": "intermediate",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "duration": 0.5,
+      "tokens_per_second": 0.0
+    },
+    {
+      "timestamp": "2026-08-23T10:29:36.985532",
+      "skill": "memory-image-generation",
+      "round_type": "intermediate",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "duration": 15.2,
+      "tokens_per_second": 0.0
+    },
+    {
+      "timestamp": "2026-08-23T10:29:48.161008",
+      "skill": "skill-planner",
+      "round_type": "intermediate",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "duration": 0.5,
+      "tokens_per_second": 0.0
+    },
+    {
+      "timestamp": "2026-08-23T10:29:48.568435",
+      "skill": "skill-planner,memory-image-generation",
+      "round_type": "intermediate",
+      "input_tokens": 500,
+      "output_tokens": 300,
+      "total_tokens": 800,
+      "duration": 3.5,
+      "tokens_per_second": 228.57
+    },
+    {
+      "timestamp": "2026-08-23T10:30:35.612858",
+      "skill": "skill-planner,memory-image-generation",
+      "round_type": "intermediate",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "duration": 4.2,
+      "tokens_per_second": 0.0
+    },
+    {
+      "timestamp": "2026-08-23T10:31:17.378302",
+      "skill": "memory-image-generation",
+      "round_type": "intermediate",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 1500,
+      "duration": 18.5,
+      "tokens_per_second": 81.08
+    }
+  ],
+  "stats": {
+    "visioncustom": {
+      "count": 1,
+      "total_tokens": 1695,
+      "total_duration": 2.5
+    },
+    "skill-tracker": {
+      "count": 3,
+      "total_tokens": 1300,
+      "total_duration": 4.5
+    },
+    "memory-sync": {
+      "count": 1,
+      "total_tokens": 300,
+      "total_duration": 1.5
+    },
+    "skill-planner,memory-image-generation": {
+      "count": 3,
+      "total_tokens": 800,
+      "total_duration": 11.2
+    },
+    "skill-planner": {
+      "count": 2,
+      "total_tokens": 0,
+      "total_duration": 1.0
+    },
+    "memory-image-generation": {
+      "count": 2,
+      "total_tokens": 1500,
+      "total_duration": 33.7
+    }
+  }
+}
