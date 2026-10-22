@@ -3136,6 +3136,23 @@ def _workspace_dirs():
     return (dynamic if os.path.isdir(dynamic) else data_root), skills_dir
 
 
+def _data_work_dir():
+    """产出目录一律由沙箱层决定，避免各处自己拼路径拼错。
+
+    职业坑：`_workspace_dirs()[0]` 返回的是 data/dynamic，
+    直接 join("work") 会得到 data/dynamic/work，而沙箱层把产出
+    统一放在与 dynamic 同级的 data/work。两边不一致时，
+    用户看到「产出目录 data/work」，文件却落到了 dynamic/work。
+    """
+    data_dir, _ = _workspace_dirs()
+    try:
+        import skill_exec
+        return skill_exec.data_work_dir(data_dir)
+    except Exception:
+        real = os.path.realpath(data_dir)
+        return os.path.join(os.path.dirname(real), "work")
+
+
 # ==================== 运行时配置 ====================
 # 尺寸说法、动词表、噪声前缀这些属于「语言/领域知识」，不是引擎逻辑。
 # 全部放 data/runtime.json，内核只读不写 —— 改配置即可调整行为。
@@ -4081,8 +4098,7 @@ def _absolutize(path):
     # 沙箱路径优先映射，哪怕它当前还存在
     if is_sandbox:
         try:
-            data_dir, _ = _workspace_dirs()
-            workdir = os.path.join(data_dir, "work")
+            workdir = _data_work_dir()
         except Exception:
             workdir = os.getcwd()
         tail = p.split("dbagent-sandbox", 1)[1].lstrip("\\/")
@@ -4096,8 +4112,7 @@ def _absolutize(path):
         return p
 
     try:
-        data_dir, _ = _workspace_dirs()
-        workdir = os.path.join(data_dir, "work")
+        workdir = _data_work_dir()
     except Exception:
         workdir = os.getcwd()
 
@@ -5076,8 +5091,7 @@ def _write_table_xlsx(rows, title):
     except ImportError:
         print("⚠️ 未安装 openpyxl，无法生成 Excel（pip install openpyxl）")
         return None
-    data_dir, _ = _workspace_dirs()
-    workdir = os.path.join(os.path.realpath(data_dir), "work")
+    workdir = _data_work_dir()
     out = os.path.join(workdir, "表格", f"{title}.xlsx")
     try:
         os.makedirs(os.path.dirname(out), exist_ok=True)
